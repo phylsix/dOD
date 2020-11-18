@@ -1,5 +1,6 @@
 
 import numpy as np
+from dataWrapper import data_wrapper as drp
 
 def bkg_sample(size):
    return np.random.rand(size[0],size[1])
@@ -33,16 +34,7 @@ def signal_motion_sample(r,size, ntime):
     y = int(np.random.randint(size[1]-1))
 	
     bkg = bkg_sample(size)
-    contral_bit = np.zeros((2, 1))
-    makeSig = np.random.randint(0,1)
-    if makeSig > 0.3: 
-	makeSig = 1
-	control_bit[1]= 1
-    else:
-	makeSig = 0
-    	sig = np.zeros((size[0],size[1]))
-	control_bit[0]= 1
- 	return bkg, bkg, contral_bit 
+    makeSig = np.random.uniform(0,1)
      
     vmax_x = 10
     vmax_y = 10
@@ -51,8 +43,9 @@ def signal_motion_sample(r,size, ntime):
     sig = []
     data = []
     for i in range(ntime):
-        d0 = signal_sample(r, size, [x,y])
-#        data = d0
+        d0 = np.zeros((size[0],size[1]))
+        if makeSig > 0.3:
+             d0 = signal_sample(r, size, [x,y])
         sig.append(d0)
         data.append(np.add(d0,bkg))
         dx = int(np.random.randint(-vmax_x,vmax_x))
@@ -61,40 +54,12 @@ def signal_motion_sample(r,size, ntime):
         y = y+dy
         if x < 0 or x > size[0]-1 : x = x-2*dx
         if y < 0 or y > size[1]-1 : y = y-2*dy
-    return data, sig, contral_bit
-
-class data_wrapper(object):
-	def __init__(self, func, size, length):
-	"""
-	param func: the function to generate the samples
-	"""
-		self.func=func
-		self.size=size
-		self.length=length
-	
-	def generate(self, size):
-		data = []
-		sig = []
-		bit = []
-		for i in range(size):
-			d, s, b = func(5, [self.size,self.size], self.length)
-			data.append(d)
-			sig.append(s)
-			bit.append(b)	
-		return data, sig, bit 
-	
+    return data, sig 
 
 
-t = [200,200]
-#signal_motion_sample(2,t,1)
-ntime = 20
-data,sig, bit= signal_motion_sample(5,t,ntime)
+class sample_v0(drp):
+	def __init__(self, name, px, py, FPS):
+		super(sample_v0, self).__init__( name, px,py,FPS)
 
-
-import matplotlib.pyplot as plt
-import time
-for i in range(ntime):
-    plt.imshow(data[i])
-    plt.pause(1.0/ntime)
-
-plt.show()
+	def pop(self):
+		return signal_motion_sample(6,[self.p_w, self.p_h], self.fps)
