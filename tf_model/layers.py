@@ -15,11 +15,12 @@ def conv2d(x, kernal, bias, keep_prob):
 def deconv2d(x, kernal, stride):
     with tf.name_scope("deconv2d"):
         x_shape = tf.shape(x)
-        output_shape = tf.stack(x_shape[0], x_shape[1]*2, x_shape[2]*2, x_shape[3]//2)
+        output_shape = [x_shape[0], x_shape[1]*2, x_shape[2]*2, x_shape[3]//2]
+        #output_shape = tf.stack(x_shape[0], x_shape[1]*2, x_shape[2]*2, x_shape[3]//2)
         return tf.nn.conv2d_transpose(x, kernal, output_shape, strides=[1, stride, stride, 1], padding="SAME", name ="conv2d_transpose")
 
 def weight_variable(shape, stddev = 0.1, name = "weight"):
-    initial = tf.truncated_normal(shape, stddev=stddev)
+    initial = tf.random.truncated_normal(shape, stddev=stddev)
     return tf.Variable(initial, name=name)
 
 def bias_variable_const(shape, name="bias"):
