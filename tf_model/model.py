@@ -25,11 +25,13 @@ class mynet(object):
 		self.conv_out = OrderedDict()
 		self.layer_pools = OrderedDict()	
 		self.up_stream = OrderedDict()	
-		self.variables = []
+		self.variable_list = []
 		self.net = tf.function(func = self.create_net,input_signature = [tf.TensorSpec(shape=[self.nx, self.ny, self.channels], dtype=tf.float32)])	
+		self.step_count=0
 
 	def predict(self, inputs):
 		return self.net.get_concrete_function(inputs)
+
 
 	def create_net(self, x):
 		features_root = 16
@@ -111,11 +113,11 @@ class mynet(object):
 		    self.up_stream["out"]=output_map
 		
 		for w1, w2 in self.weights:
-		    self.variables.append(w1)
-		    self.variables.append(w2)
+		    self.variable_list.append(w1)
+		    self.variable_list.append(w2)
 		for b1, b2 in self.biases:
-		    self.variables.append(b1)
-		    self.variables.append(b2)
+		    self.variable_list.append(b1)
+		    self.variable_list.append(b2)
 		
 		return output_map
 
@@ -126,7 +128,7 @@ class mynet(object):
 			flat_labels = tf.reshape(output, [-1, self.control_bit])
 			loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits = flat_logits, labels=flat_labels))
 		return loss
-	
+
 
 class Unet(object):
     def __init__(self, channels, control_bit, cost="cross_entropy", **kwargs):
@@ -150,8 +152,6 @@ class Unet(object):
             self.predicter = pixel_wise_softmax(logits)
             self.correct_pred = tf.equal(tf.argmax(self.predicter, 3), tf.argmax(self.y, 3))
             self.accuracy = tf.reduce_mean(tf.cast(self.correct_pred, tf.float32))
-
-	
 
 
 class Trainer(object):

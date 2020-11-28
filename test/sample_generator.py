@@ -36,13 +36,13 @@ def signal_motion_sample(r,size, ntime):
     contral_bit = np.zeros((2, 1))
     makeSig = np.random.randint(0,1)
     if makeSig > 0.3: 
-	makeSig = 1
-	control_bit[1]= 1
+        makeSig = 1
+        control_bit[1]= 1
     else:
-	makeSig = 0
-    	sig = np.zeros((size[0],size[1]))
-	control_bit[0]= 1
- 	return bkg, bkg, contral_bit 
+        makeSig = 0
+        sig = np.zeros((size[0],size[1]))
+        control_bit[0]= 1
+        return bkg, bkg, contral_bit 
      
     vmax_x = 10
     vmax_y = 10
@@ -64,24 +64,21 @@ def signal_motion_sample(r,size, ntime):
     return data, sig, contral_bit
 
 class data_wrapper(object):
-	def __init__(self, func, size, length):
-	"""
-	param func: the function to generate the samples
-	"""
-		self.func=func
-		self.size=size
-		self.length=length
-	
-	def generate(self, size):
-		data = []
-		sig = []
-		bit = []
-		for i in range(size):
-			d, s, b = func(5, [self.size,self.size], self.length)
-			data.append(d)
-			sig.append(s)
-			bit.append(b)	
-		return data, sig, bit 
+    def __init__(self, func, size, length):
+    	self.func=func
+    	self.size=size
+    	self.length=length
+    
+    def generate(self, size):
+        data = []
+        sig = []
+        bit = []
+        for i in range(size):
+            d, s, b = func(5, [self.size,self.size], self.length)
+            data.append(d)
+            sig.append(s)
+            bit.append(b)	
+        return data, sig, bit 
 	
 
 
