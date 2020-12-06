@@ -3,49 +3,79 @@ import tensorflow as tf
 
 # the shape of the tensor is [batch, width, height, channels]
 
-def max_pool(x, n):
-    return tf.nn.max_pool(x, ksize=[1,n,n,1], strides=[1,n,n,1],padding='SAME')
+class sequentialConv2DLayer(tf.keras.layers.Layer):
+	def __init__(self,  kernal_shape, nlayer, padding, stride, drop_rate, **kwargs):
+		super(sequentialConv2DLayer, self).__init__(**kwargs)
+		# shape = [width, height, channels]
+		self.ishape = None
+		self.nlayer = nlayer
+		self.drop_rate = drop_rate
+		self.layers_conv2d = []
+		self.layers_dropout = []
+		self.kernal_shape = kernal_shape
 
-def conv2d(x, kernal, bias, keep_prob):
-    with tf.name_scope("conv2d"):
-        conv_2d = tf.nn.conv2d(x, kernal, strides=[1,1,1,1], padding='SAME')
-        conv_2d_b = tf.nn.bias_add(conv_2d, bias)
-        return tf.nn.dropout(conv_2d_b, keep_prob)
-       
-def deconv2d(x, kernal, stride):
-    with tf.name_scope("deconv2d"):
-        x_shape = tf.shape(x)
-        output_shape = [x_shape[0], x_shape[1]*2, x_shape[2]*2, x_shape[3]//2]
-        #output_shape = tf.stack(x_shape[0], x_shape[1]*2, x_shape[2]*2, x_shape[3]//2)
-        return tf.nn.conv2d_transpose(x, kernal, output_shape, strides=[1, stride, stride, 1], padding="SAME", name ="conv2d_transpose")
+		if "input_shape" in kwargs:
+			self.ishape = kwargs["input_shape"]
 
-def weight_variable(shape, stddev = 0.1, name = "weight"):
-    initial = tf.random.truncated_normal(shape, stddev=stddev)
-    return tf.Variable(initial, name=name)
+		if self.ishape is None:	
+			self.layers_conv2d.append(tf.keras.layers.Conv2D(kernal_shape[2], kernal_shape[0:2], strides=stride, padding = padding, activation = 'relu'))
+		else :
+			self.layers_conv2d.append(tf.keras.layers.Conv2D(kernal_shape[2], kernal_shape[0:2], strides=stride, padding = padding, input_shape = self.ishape, activation = 'relu'))
+		self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
+	
+		for ilyer in range(1,self.nlayer):
+			self.layers_conv2d.append(tf.keras.layers.Conv2D(self.ishape[2], kernal_shape[0:2], strides=stride, padding = padding, activation = 'relu'))
+			self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
+	
+	def call(self, inputs, training=None, **kwargs):
+		x = inputs
+		for ilyer in range(0,self.nlayer):
+			x = self.layers_conv2d[ilyer](x)
+			x = self.layers_dropout[ilyer](x)
+		return x
 
-def bias_variable_const(shape, name="bias"):
-    initial = tf.constant(0.1, shape = shape)
-    return tf.Variable(initial, name=name)
+class sequentialConv2DTransposeLayer(tf.keras.layers.Layer):
+	def __init__(self,  kernal_shape, nlayer, padding, stride, drop_rate, **kwargs):
+		super(sequentialConv2DTransposeLayer, self).__init__(**kwargs)
+		# shape = [width, height, channels]
+		self.ishape = None
+		self.nlayer = nlayer
+		self.drop_rate = drop_rate
+		self.layers_conv2dT = []
+		self.layers_dropout = []
+		self.kernal_shape = kernal_shape
 
-def bias_variable_randomNorm(shape, stddev=1.0, name="bias"):
-    initial = tf.random.normal(shape, stddev=stddev)
-    return tf.Variable(initial, name=name)
+		if "input_shape" in kwargs:
+			self.ishape = kwargs["input_shape"]
 
-def cross_entropy( result, mask):
-    return -tf.math.reduce_mean(mask*tf.log(tf.clip_by_value(result, 0.0, 1.0)),name="cross_entropy")
+		if self.ishape is None:	
+			self.layers_conv2dT.append(tf.keras.layers.Conv2DTranspose(kernal_shape[2], kernal_shape[0:2], strides=stride, padding = padding, activation = 'relu'))
+		else :
+			self.layers_conv2dT.append(tf.keras.layers.Conv2DTranspose(kernal_shape[2], kernal_shape[0:2], strides=stride, padding = padding, input_shape = self.ishape, activation = 'relu'))
+		self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
+	
+		for ilyer in range(1,self.nlayer):
+			self.layers_conv2dT.append(tf.keras.layers.Conv2DTranspose(self.ishape[2], kernal_shape[0:2], strides=stride, padding = padding, activation = 'relu'))
+			self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
+	
+	def call(self, inputs, training=None, **kwargs):
+		x = inputs
+		for ilyer in range(0,self.nlayer):
+			x = self.layers_conv2dT[ilyer](x)
+			x = self.layers_dropout[ilyer](x)
+		return x
 
-def crop_and_concat(x1,x2):
-    with tf.name_scope("crop_and_concat"):
-        x1_shape = tf.shape(x1)
-        x2_shape = tf.shape(x2)
-        offsets = [0, (x1_shape[1]-x2_shape[1])//2, (x1_shape[2]-x2_shape[2])//2, 0]
-        size = [-1, x2_shape[1], x2_shape[2], -1]
-        x1_crop = tf.slice(x1, offsets, size)
-        return tf.concat([x1_crop, x2], 3)
-
-def pixel_wise_softmax(output_map):
-    with tf.name_scope("pixel_wise_softmax"):
-        max_axis = tf.reduce_max(output_map, axis=3, keepdims=True)
-        exponential_map = tf.exp(output_map - max_axis)
-        normalize = tf.reduce_sum(exponential_map, axis=3, keepdims=True)
-        return exponential_map / normalize
+class cropConcat(tf.keras.layers.Layer):
+	def call(self, x1, x2):
+		x1_shape = tf.shape(x1)
+		x2_shape = tf.shape(x2)
+		height_diff = (x1_shape[1] - x2_shape[1]) // 2
+		width_diff = (x1_shape[2] - x2_shape[2]) // 2
+		
+		down_layer_cropped = x1[:,
+			height_diff: (x1_shape[1] - height_diff),
+			width_diff: (x1_shape[2] - width_diff),
+			:]
+		
+		x = tf.concat([down_layer_cropped, x2], axis=-1)
+		return x
