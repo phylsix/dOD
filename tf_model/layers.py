@@ -21,17 +21,20 @@ class sequentialConv2DLayer(tf.keras.layers.Layer):
 			self.layers_conv2d.append(tf.keras.layers.Conv2D(kernal_shape[2], kernal_shape[0:2], strides=stride, padding = padding, activation = 'relu'))
 		else :
 			self.layers_conv2d.append(tf.keras.layers.Conv2D(kernal_shape[2], kernal_shape[0:2], strides=stride, padding = padding, input_shape = self.ishape, activation = 'relu'))
-		self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
+		if self.drop_rate > 0 : 
+			self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
 	
 		for ilyer in range(1,self.nlayer):
 			self.layers_conv2d.append(tf.keras.layers.Conv2D(self.ishape[2], kernal_shape[0:2], strides=stride, padding = padding, activation = 'relu'))
-			self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
+			if self.drop_rate > 0 : 
+				self.layers_dropout.append(tf.keras.layers.Dropout(self.drop_rate))
 	
 	def call(self, inputs, training=None, **kwargs):
 		x = inputs
 		for ilyer in range(0,self.nlayer):
 			x = self.layers_conv2d[ilyer](x)
-			x = self.layers_dropout[ilyer](x)
+			if self.drop_rate > 0 : 
+				x = self.layers_dropout[ilyer](x)
 		return x
 
 class sequentialConv2DTransposeLayer(tf.keras.layers.Layer):

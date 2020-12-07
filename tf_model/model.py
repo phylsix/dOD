@@ -19,10 +19,8 @@ class mynet(object):
 		self.ishape = input_shape
 		self.layers_downstream = {}
 		self.layers_upstream = {}
+		self.net = None
 
-
-		self.net = self.buildNet()
-		self.net.compile(loss="binary_crossentropy", optimizer=tf.keras.optimizers.Adam())
 		
 	def buildNet(self):
 		inputs = tf.keras.Input(shape = self.ishape, name="inputs")
@@ -33,10 +31,12 @@ class mynet(object):
 			x = tf.keras.layers.MaxPooling2D((2,2))(x)
 
 		for idepth in range(0, self.depth):
+			x = sequentialConv2DTransposeLayer(kernal_shape=(3,3,3), nlayer = 1, padding="same", stride=(1,1), drop_rate=0, input_shape=self.ishape)(x)
 			x = cropConcat()(self.layers_downstream[self.depth-idepth-1],x)
-			x = sequentialConv2DTransposeLayer(kernal_shape=(3,3,3), nlayer = 2, padding="same", stride=(1,1), drop_rate=self.keep_prob, input_shape=self.ishape)(x)
+			x = sequentialConv2DLayer(kernal_shape=(3,3,3), nlayer = 2, padding="same", stride=(1,1), drop_rate=self.keep_prob, input_shape=self.ishape)(x)
 			self.layers_upstream[self.depth-idepth-1] = x
-			x = tf.keras.layers.MaxPooling2D((2,2))(x)
 			
 		model = tf.keras.Model(inputs, x, name = "test")
-		return model
+		self.net = model
+		self.net.compile(loss="binary_crossentropy", optimizer = "Adam", metrics=['binary_crossentropy','binary_accuracy'])
+		return 
