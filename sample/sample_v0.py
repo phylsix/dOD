@@ -29,37 +29,43 @@ def signal_sample(r, size, start = [0,0]):
             
     return sig
 
-def signal_motion_sample(r,size, ntime):
-    x = int(np.random.randint(size[0]-1))
-    y = int(np.random.randint(size[1]-1))
+def signal_motion_sample(r,size, shift,ntime):
+    x = shift[0]+int(np.random.randint(size[0]-2*shift[0]-1))
+    y = shift[1]+int(np.random.randint(size[1]-2*shift[1]-1))
 	
     bkg = bkg_sample(size)
     makeSig = np.random.uniform(0,1)
+    makeSig = 1
      
-    vmax_x = 10
-    vmax_y = 10
+    vmax_x = size[0]//20
+    vmax_y = size[1]//20
     dx=0 
     dy=0
     sig = []
     data = []
+    boundary_x = [shift[0], size[0]-2*shift[0]-1]
+    boundary_y = [shift[1], size[1]-2*shift[1]-1]
     for i in range(ntime):
         d0 = np.zeros((size[0],size[1]))
         if makeSig > 0.3:
              d0 = signal_sample(r, size, [x,y])
-        sig.append(d0)
+        #sig.append(d0)
         data.append(np.add(d0,bkg))
+        sig.append(d0[shift[0]:size[0]-shift[0], shift[1]:size[1]-shift[1]])
         dx = int(np.random.randint(-vmax_x,vmax_x))
         dy = int(np.random.randint(-vmax_y,vmax_y))
         x = x+dx
         y = y+dy
-        if x < 0 or x > size[0]-1 : x = x-2*dx
-        if y < 0 or y > size[1]-1 : y = y-2*dy
+        if x < boundary_x[0] or x > boundary_x[1] : x = x-2*dx
+        if y < boundary_y[0] or y > boundary_y[1] : y = y-2*dy
     return data, sig 
 
-
 class sample_v0(drp):
-	def __init__(self, name, px, py, FPS):
+	def __init__(self, name, px, py, crop, FPS, radius):
 		super(sample_v0, self).__init__( name, px,py,FPS)
+		self.crop = crop
+		self.r = radius
 
 	def pop(self):
-		return signal_motion_sample(6,[self.p_w, self.p_h], self.fps)
+		return signal_motion_sample(self.r,[self.p_w, self.p_h], self.crop, self.fps)
+

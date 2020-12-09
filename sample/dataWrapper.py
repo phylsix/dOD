@@ -33,7 +33,7 @@ class data_wrapper(object):
 			d, s = self.pop()
 			data.append(d)
 			sig.append(s)
-		return data, sig 
+		return np.array(data), np.array(sig)
 	
 	def update(self, i, data, fg, ax, ntrail):
 		label = 'Frame step: {0}/{1}'.format(i+1, ntrail*self.fps)
@@ -45,14 +45,21 @@ class data_wrapper(object):
 		ntrails = int(40/self.fps);
 		if ntrails*self.fps < 40 : ntrails+=1
 		data = []
+		mask = []
 		for j in range(ntrails):
 			d, sig = self.pop()
 			for i in range(self.fps):
+				mask.append(sig[i])
 				data.append(d[i])
-		fig,ax = plt.subplots()
-		fg = ax.imshow(data[0])
+		fig,(ax1,ax2) = plt.subplots(1,2, sharey=True)
+		print(data[0].shape)
+		fg1 = ax1.imshow(data[0])
+		fg2 = ax2.imshow(mask[0])
+		ax1.set_title("data")
+		ax2.set_title("mask")
 		for i in range(1, ntrails*self.fps):
-			self.update(i, data, fg, ax, ntrails)
+			self.update(i, data, fg1, ax1, ntrails)
+			self.update(i, mask, fg2, ax2, ntrails)
 			plt.pause(2/self.fps/ntrails)
 		plt.show()
 			
