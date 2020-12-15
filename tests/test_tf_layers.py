@@ -13,6 +13,7 @@ class TestSequentialConv2DLayer:
             strides=1,
             activation='relu',
             drop_rate=0.5,
+            norm_type='instancenorm',
             name='seq_conv2d_test'
         )
 
@@ -25,11 +26,10 @@ class TestSequentialConv2DLayer:
         assert reconstructed.strides == seq_conv2d.strides
         assert reconstructed.activation == seq_conv2d.activation
         assert reconstructed.drop_rate == seq_conv2d.drop_rate
+        assert reconstructed.norm_type == seq_conv2d.norm_type
 
         assert len(reconstructed.layers_conv2d) == \
             len(seq_conv2d.layers_conv2d)
-        assert len(reconstructed.layers_dropout) == \
-            len(seq_conv2d.layers_dropout)
 
 
 class TestConv2DTransposeLayer:
@@ -40,6 +40,8 @@ class TestConv2DTransposeLayer:
             padding='same',
             strides=2,
             activation='relu',
+            drop_rate=0.2,
+            norm_type='batchnorm',
             name='conv2d_transpose_test'
         )
 
@@ -50,6 +52,8 @@ class TestConv2DTransposeLayer:
         assert reconstructed.padding == conv2d_transpose.padding
         assert reconstructed.strides == conv2d_transpose.strides
         assert reconstructed.activation == conv2d_transpose.activation
+        assert reconstructed.drop_rate == conv2d_transpose.drop_rate
+        assert reconstructed.norm_type == conv2d_transpose.norm_type
 
 
 class TestCropConcatLayer:

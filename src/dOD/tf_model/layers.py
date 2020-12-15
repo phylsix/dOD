@@ -12,29 +12,70 @@ def get_kernel_initializer(filters: int,
     return TruncatedNormal(stddev=stddev)
 
 
+class InstanceNormalization(tf.keras.layers.Layer):
+    """Instance Normalization Layer (https://arxiv.org/abs/1607.08022)
+
+    Attributes:
+        epsilon: small number
+        scale:
+        offset:
+    """
+
+    def __init__(self, epsilon: float = 1e-5) -> None:
+        super(InstanceNormalization, self).__init__()
+        self.epsilon = epsilon
+
+    def build(self, input_shape) -> None:
+        self.scale = self.add_weight(
+            name='scale',
+            shape=input_shape[-1:],
+            initializer=tf.random_normal_initializer(1., 0.02),
+            trainable=True
+        )
+
+        self.offset = self.add_weight(
+            name='offset',
+            shape=input_shape[-1:],
+            initializer='zeros',
+            trainable=True
+        )
+
+    def call(self, x: tf.Tensor) -> tf.Tensor:
+        mean, variance = tf.nn.moments(x, axes=[1, 2], keepdims=True)
+        inv = tf.math.rsqrt(variance + self.epsilon)
+        normalized = (x - mean) * inv
+        return self.scale * normalized + self.offset
+
+
 class SequentialConv2DLayer(Layer):
     """Encapsulate a sequence of Conv2D operations.
+
+    (Conv2D => Normalization => Dropout => Activation) * nlayer
+    Default:     batchNorm       0.5        relu           2
+
 
     Attributes:
         ishape: input sample shape.
         nlayer: number of Conv2D layers.
         padding: padding scheme for Conv2D, 'same' or 'valid'.
         strides: strides arg for Conv2D.
-        activation: activation arg for Conv2D.
+        activation: activation function.
         drop_rate: drop_rate arg for Conv2D.
+        norm_type: normalization layer, 'batchnorm' or 'instancenorm'.
         layers_conv2d: Conv2D layers.
-        layers_dropout: Dropout layers.
         kernel_shape: convolution kernel shape.
         kernel_initializer: kernel_initializer arg for Conv2D.
     """
 
     def __init__(self,
                  kernel_shape: Tuple[int, int, int],
-                 nlayer: int,
+                 nlayer: int = 2,
                  padding: str = 'same',
                  strides: int = 1,
                  activation: Optional[Union[str, Callable]] = 'relu',
-                 drop_rate: float = 0., **kwargs) -> None:
+                 drop_rate: float = 0.5,
+                 norm_type: Optional[Union[str, Callable]] = 'batchnorm',
+                 **kwargs) -> None:
         super(SequentialConv2DLayer, self).__init__(**kwargs)
 
         self.ishape = None  # shape = [rows/height, cols/width, channels]
@@ -43,8 +84,8 @@ class SequentialConv2DLayer(Layer):
         self.strides = strides
         self.activation = activation
         self.drop_rate = drop_rate
+        self.norm_type = norm_type
         self.layers_conv2d = []
-        self.layers_dropout = []
         self.kernel_shape = kernel_shape
 
         if "input_shape" in kwargs:
@@ -61,7 +102,6 @@ class SequentialConv2DLayer(Layer):
                     kernel_size=kernel_shape[:2],
                     strides=strides,
                     padding=padding,
-                    activation=self.activation,
                     kernel_initializer=self.kernel_initializer)
             )
         else:
@@ -72,13 +112,7 @@ class SequentialConv2DLayer(Layer):
                     strides=strides,
                     padding=padding,
                     input_shape=self.ishape,
-                    activation=self.activation,
                     kernel_initializer=self.kernel_initializer)
-            )
-
-        if self.drop_rate > 0.:
-            self.layers_dropout.append(
-                tf.keras.layers.Dropout(self.drop_rate)
             )
 
         # The rest
@@ -89,13 +123,8 @@ class SequentialConv2DLayer(Layer):
                     kernel_size=kernel_shape[:2],
                     strides=strides,
                     padding=padding,
-                    activation=self.activation,
                     kernel_initializer=self.kernel_initializer)
             )
-            if self.drop_rate > 0.:
-                self.layers_dropout.append(
-                    tf.keras.layers.Dropout(self.drop_rate)
-                )
 
     def call(self,
              inputs: tf.Tensor,
@@ -105,8 +134,24 @@ class SequentialConv2DLayer(Layer):
 
         for i in range(self.nlayer):
             x = self.layers_conv2d[i](x)
+
+            if self.norm_type:
+                if isinstance(self.norm_type, str):
+                    if self.norm_type.lower() == 'batchnorm':
+                        x = tf.keras.layers.BatchNormalization()(x)
+                    if self.norm_type.lower() == 'instancenorm':
+                        x = InstanceNormalization()(x)
+                elif isinstance(self.norm_type, Callable):
+                    x = self.norm_type(x)
+
             if training and self.drop_rate > 0.:
-                x = self.layers_dropout[i](x)
+                x = tf.keras.layers.Dropout(self.drop_rate)(x)
+
+            if self.activation:
+                if isinstance(self.activation, str):
+                    x = tf.keras.layers.Activation(self.activation)(x)
+                elif isinstance(self.activation, Callable):
+                    x = self.activation(x)
 
         return x
 
@@ -117,17 +162,23 @@ class SequentialConv2DLayer(Layer):
                     strides=self.strides,
                     activation=self.activation,
                     drop_rate=self.drop_rate,
+                    norm_type=self.norm_type,
                     **super(SequentialConv2DLayer, self).get_config())
 
 
 class Conv2DTransposeLayer(Layer):
     """Encapsulate Conv2DTranspose operation.
 
+    Conv2DTranspose => Normalization => Dropout => Activation
+    Default:              batchNorm        0.5        relu
+
     Attributes:
         kernel_shape: kernel size and filters.
         padding: padding scheme for Conv2DTranspose.
         strides: strides arg for Conv2DTranspose.
         activation: activation arg for Conv2DTranspose.
+        drop_rate: dropout rate.
+        norm_type: normalization layer, 'batchnorm' or 'instancenorm'.
         kernel_initializer: kernel_initializer arg for Conv2DTranspose.
         layer: holder of Conv2DTranspose.
     """
@@ -137,6 +188,8 @@ class Conv2DTransposeLayer(Layer):
                  padding: str = 'valid',
                  strides: int = 2,
                  activation: Optional[Union[str, Callable]] = 'relu',
+                 drop_rate: float = 0.5,
+                 norm_type: Optional[Union[str, Callable]] = 'batchnorm',
                  **kwargs) -> None:
         super(Conv2DTransposeLayer, self).__init__(**kwargs)
 
@@ -144,6 +197,8 @@ class Conv2DTransposeLayer(Layer):
         self.padding = padding
         self.strides = strides
         self.activation = activation
+        self.drop_rate = drop_rate
+        self.norm_type = norm_type
 
         self.kernel_initializer = get_kernel_initializer(
             filters=kernel_shape[2], kernel_size=kernel_shape[:2])
@@ -153,12 +208,31 @@ class Conv2DTransposeLayer(Layer):
             kernel_size=kernel_shape[:2],
             strides=strides,
             padding=padding,
-            activation=self.activation,
-            kernel_initializer=self.kernel_initializer)
+            kernel_initializer=self.kernel_initializer,
+            use_bias=False)
 
     def call(self, inputs: tf.Tensor, **kwargs) -> tf.Tensor:
         x = inputs
         x = self.layer(x)
+
+        if self.norm_type:
+            if isinstance(self.norm_type, str):
+                if self.norm_type.lower() == 'batchnorm':
+                    x = tf.keras.layers.BatchNormalization()(x)
+                if self.norm_type.lower() == 'instancenorm':
+                    x = InstanceNormalization()(x)
+            elif isinstance(self.norm_type, Callable):
+                x = self.norm_type(x)
+
+        if self.drop_rate > 0:
+            x = tf.keras.layers.Dropout(self.drop_rate)(x)
+
+        if self.activation:
+            if isinstance(self.activation, str):
+                x = tf.keras.layers.Activation(self.activation)(x)
+            elif isinstance(self.activation, Callable):
+                x = self.activation(x)
+
         return x
 
     def get_config(self) -> Dict[str, Any]:
@@ -166,6 +240,8 @@ class Conv2DTransposeLayer(Layer):
                     padding=self.padding,
                     strides=self.strides,
                     activation=self.activation,
+                    drop_rate=self.drop_rate,
+                    norm_type=self.norm_type,
                     **super(Conv2DTransposeLayer, self).get_config())
 
 

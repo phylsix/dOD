@@ -63,7 +63,7 @@ class Trainer:
         callbacks = self.callbacks if self.callbacks else []
 
         # ModelCheckpoint
-        if self.save_checkpoint and \
+        if self.save_checkpoint and self.logpath and \
                 not any(isinstance(cb, ModelCheckpoint) for cb in callbacks):
             callbacks.append(ModelCheckpoint(
                 self.logpath,
