@@ -1,0 +1,45 @@
+dOD.tf\_model package
+=====================
+
+Submodules
+----------
+
+dOD.tf\_model.callbacks module
+------------------------------
+
+.. automodule:: dOD.tf_model.callbacks
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dOD.tf\_model.layers module
+---------------------------
+
+.. automodule:: dOD.tf_model.layers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dOD.tf\_model.model module
+--------------------------
+
+.. automodule:: dOD.tf_model.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dOD.tf\_model.trainer module
+----------------------------
+
+.. automodule:: dOD.tf_model.trainer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: dOD.tf_model
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,531 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pre-request setup &#8212; dOD notebooks</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Circles (tensorflow)" href="tf_circles.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">dOD notebooks</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="reference internal" href="#">
+   Pre-request setup
+  </a>
+ </li>
+</ul>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="tf_circles.html">
+   Circles (tensorflow)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tf_oxford-iiit.html">
+   Oxford-iiit-pet (tensorflow)
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/dev_note.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/dev_note.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
+   Pre-request setup
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tensorflow">
+     Tensorflow
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cuda-toolkit">
+       CUDA Toolkit
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#cudnn">
+       cuDNN
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#dod">
+   dOD
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sample-preparation">
+     Sample preparation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model-structure">
+   Model structure
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#convolutional-layer">
+     Convolutional layer
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#softdrop">
+     Softdrop
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#max-pool-layer">
+     Max pool layer
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#transpose-convolutional-layer">
+     Transpose convolutional layer
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loss-function-and-accuracy">
+   Loss function and accuracy
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#cross-entropy">
+     cross-entropy
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#standard">
+       standard
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#binary-cross-entropy">
+       Binary cross-entropy
+      </a>
+     </li>
+     <li class="toc-h3 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#categorical-cross-entropy">
+       categorical cross-entropy
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#u-net-attempation">
+   U-net attempation
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="pre-request-setup">
+<h1>Pre-request setup<a class="headerlink" href="#pre-request-setup" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tensorflow">
+<h2>Tensorflow<a class="headerlink" href="#tensorflow" title="Permalink to this headline">¶</a></h2>
+<p>Current working version for tensorflow is v2.3.
+Install the tensorflow and other <a class="reference external" href="https://www.tensorflow.org/install/gpu">requirements</a> for getting GPU support.</p>
+<p>To use the CUDA, make sure the GPU you used is in the <a class="reference external" href="https://developer.nvidia.com/cuda-gpus">CUDA capatable list</a></p>
+<div class="section" id="cuda-toolkit">
+<h3>CUDA Toolkit<a class="headerlink" href="#cuda-toolkit" title="Permalink to this headline">¶</a></h3>
+<p>Check the pre-requirment based on the <a class="reference external" href="https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html#verify-you-have-cuda-enabled-system">CUDA toolkit installation guide</a>.</p>
+<p>Download the <a class="reference external" href="https://developer.nvidia.com/cuda-10.1-download-archive-base">CUDA Toolkit 10.1 and CUPTI</a>, installing commands:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo dpkg -i cuda-repo-ubuntu1810-10-1-local-10.1.105-418.39_1.0-1_amd64.deb
+sudo apt-key add /var/cuda-repo-&lt;version&gt;/7fa2af80.pub
+sudo apt-get update
+sudo apt-get install cuda
+</pre></div>
+</div>
+</div>
+<div class="section" id="cudnn">
+<h3>cuDNN<a class="headerlink" href="#cudnn" title="Permalink to this headline">¶</a></h3>
+<p>Download the <code class="docutils literal notranslate"><span class="pre">version</span> <span class="pre">7.6.5</span></code> of cuDNN from the <a class="reference external" href="https://developer.nvidia.com/rdp/cudnn-archive">archive of the cuDNN</a> , unzip it and then install it by:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>sudo cp cuda/include/cudnn*.h /usr/local/cuda/include
+sudo cp cuda/lib64/libcudnn* /usr/local/cuda/lib64
+sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
+
+Add the environment variable:
+<span class="sb">```</span>sh
+<span class="nb">export</span> <span class="nv">LD_LIBRARY_PATH</span><span class="o">=</span><span class="nv">$LD_LIBRARY_PATH</span>:/usr/local/cuda/extras/CUPTI/lib64
+</pre></div>
+</div>
+<p>Don’t forget to reboot the machine to let the system detect the GPU.</p>
+</div>
+</div>
+</div>
+<div class="section" id="dod">
+<h1>dOD<a class="headerlink" href="#dod" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="sample-preparation">
+<h2>Sample preparation<a class="headerlink" href="#sample-preparation" title="Permalink to this headline">¶</a></h2>
+<p>For the sample preparation, a <code class="docutils literal notranslate"><span class="pre">dataWrapper</span></code> base object is made targeting to standardize
+the sample API. Three major functions:</p>
+<ol class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pop</span></code> (vritual) : generate a single sample</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">generate</span></code>: generate a batch of samples.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show</span></code> : generate few samples with visualization</p></li>
+</ol>
+<p>For new sample generator, inherit the <code class="docutils literal notranslate"><span class="pre">dataWrapper</span></code>module in <code class="docutils literal notranslate"><span class="pre">sample</span></code> folder and implement the <code class="docutils literal notranslate"><span class="pre">pop</span></code> for different sample object.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;/home/tabris/flShrine/dOD/sample&#39;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">sample_v0</span> <span class="k">as</span> <span class="nn">sp</span>
+
+<span class="n">sg</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">sample_v0</span><span class="p">(</span><span class="s1">&#39;geo0&#39;</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">sg</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/dev_note_2_0.png" src="_images/dev_note_2_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-structure">
+<h1>Model structure<a class="headerlink" href="#model-structure" title="Permalink to this headline">¶</a></h1>
+<p>A good website for ML: <a class="reference external" href="http://d2l.ai/index.html">Dive into deep learning</a></p>
+<div class="section" id="convolutional-layer">
+<h2>Convolutional layer<a class="headerlink" href="#convolutional-layer" title="Permalink to this headline">¶</a></h2>
+<p>Refering to this <a class="reference external" href="https://cs231n.github.io/convolutional-networks/">introduction</a>.
+Given an input tensor <span class="math notranslate nohighlight">\(x\)</span> with the shape <span class="math notranslate nohighlight">\(W_0\times H_0\times D_0\)</span>, a 2D convolutional layer with a <span class="math notranslate nohighlight">\(W\times H\times D\)</span> kernel <span class="math notranslate nohighlight">\(K\)</span> has <span class="math notranslate nohighlight">\((W\times H\times D_0+1)\times D\)</span> the independent variables (including biases) based on the sharing parameter strategy. They are <span class="math notranslate nohighlight">\(D\)</span> filters and each of them has <span class="math notranslate nohighlight">\(D_0\)</span> layers (<span class="math notranslate nohighlight">\(L^j_i\)</span>, the i-th layer of the j-th filter) with shape <span class="math notranslate nohighlight">\(W\times H\)</span>. One bias is assigned to each filter.</p>
+<p>Denote the convolution operation between <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> by <span class="math notranslate nohighlight">\(A\circ B\)</span>, then the j-th depth convolution layer output can be expressed as</p>
+<div class="math notranslate nohighlight">
+\[
+O^j=b_j+\sum_{i=1}^{D_0}L^j_i\circ x_i
+\]</div>
+</div>
+<div class="section" id="softdrop">
+<h2>Softdrop<a class="headerlink" href="#softdrop" title="Permalink to this headline">¶</a></h2>
+<p>The function of this layer is to prevent the over-fitting. It will randomly disable some of the elements from the input, and the probablity for disabling the elements are called drop-rate.</p>
+</div>
+<div class="section" id="max-pool-layer">
+<h2>Max pool layer<a class="headerlink" href="#max-pool-layer" title="Permalink to this headline">¶</a></h2>
+<p>The function of the max pool layer is preventing the over-fitting by reducing the outputs from selecting the maximum value among the inputs within a loca region as the outputs. For instance, for a size <span class="math notranslate nohighlight">\(W\times H\)</span> max pooling layer, it will slice the input into a many small region with shape <span class="math notranslate nohighlight">\(W\times H\)</span>, (padding or stride may apply). And only the maximum value of each slices will be the output from that region.</p>
+</div>
+<div class="section" id="transpose-convolutional-layer">
+<h2>Transpose convolutional layer<a class="headerlink" href="#transpose-convolutional-layer" title="Permalink to this headline">¶</a></h2>
+<p>More conceptial detials could be found <a class="reference external" href="http://d2l.ai/chapter_computer-vision/transposed-conv.html">here</a></p>
+</div>
+</div>
+<div class="section" id="loss-function-and-accuracy">
+<h1>Loss function and accuracy<a class="headerlink" href="#loss-function-and-accuracy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="cross-entropy">
+<h2>cross-entropy<a class="headerlink" href="#cross-entropy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="standard">
+<h3>standard<a class="headerlink" href="#standard" title="Permalink to this headline">¶</a></h3>
+<p>Suppose the prediction output is a tensor <span class="math notranslate nohighlight">\(p_{i}\)</span> and the truth is <span class="math notranslate nohighlight">\(x_{i}\)</span>, then the cross entroy py is defined as</p>
+<div class="math notranslate nohighlight">
+\[
+H(x,p) = \frac{1}{N}\sum_{i=1}^N-x_i\log p_i,
+\]</div>
+<p>where the truth <span class="math notranslate nohighlight">\(x_i\)</span> can be either 0 or 1 and <span class="math notranslate nohighlight">\(p_i&lt;1\)</span>. The summary of the feagures:</p>
+<ul class="simple">
+<li><p>Only the preidiction on the truth bit will affect the loss, no penlty/reward for the prediction on other bits.</p></li>
+<li><p>Exponentially sensetive for the predictoin on the truth bit.</p></li>
+</ul>
+</div>
+<div class="section" id="binary-cross-entropy">
+<h3>Binary cross-entropy<a class="headerlink" href="#binary-cross-entropy" title="Permalink to this headline">¶</a></h3>
+<p>Suppose the prediction <span class="math notranslate nohighlight">\(p_i\)</span> is a binary variable (either 0 or 1), the cross-entropy could be modified to be</p>
+<div class="math notranslate nohighlight">
+\[
+H'(x,p)= \frac{1}{N}\sum_{i=1}^N-x_i\log p_i-(1-x_i)\log (1-p_i),
+\]</div>
+<p>which makes the wrong prediction takes penalty as well.</p>
+</div>
+<div class="section" id="categorical-cross-entropy">
+<h3>categorical cross-entropy<a class="headerlink" href="#categorical-cross-entropy" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="section" id="u-net-attempation">
+<h1>U-net attempation<a class="headerlink" href="#u-net-attempation" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;/home/tabris/flShrine/dOD/tf_model&#39;</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">load_ext</span> tensorboard
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">model</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">mynet</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">572</span><span class="p">,</span><span class="mi">572</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span><span class="n">drop_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">buildNet</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">tensorboard</span> --logdir logs
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The tensorboard extension is already loaded. To reload it, use:
+  %reload_ext tensorboard
+------------------downstream layer 0  shape:  (None, 284, 284, 64)
+------------------downstream layer 1  shape:  (None, 140, 140, 128)
+------------------downstream layer 2  shape:  (None, 68, 68, 256)
+------------------downstream layer 3  shape:  (None, 32, 32, 512)
+------------------downstream layer 4  shape:  (None, 28, 28, 1024)
+------------------upstream layer 3  shape  (None, 52, 52, 512)
+------------------upstream layer 2  shape  (None, 100, 100, 256)
+------------------upstream layer 1  shape  (None, 196, 196, 128)
+------------------upstream layer 0  shape  (None, 388, 388, 64)
+------------------output shape  (None, 388, 388, 2)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reusing TensorBoard on port 6006 (pid 32487), started 0:01:30 ago. (Use &#39;!kill 32487&#39; to kill it.)
+</pre></div>
+</div>
+<div class="output text_html">
+<iframe id="tensorboard-frame-367f826e2b5f75d" width="100%" height="800" frameborder="0">
+</iframe>
+<script>
+  (function() {
+    const frame = document.getElementById("tensorboard-frame-367f826e2b5f75d");
+    const url = new URL("/", window.location);
+    const port = 6006;
+    if (port) {
+      url.port = port;
+    }
+    frame.src = url;
+  })();
+</script>
+</div></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='right-next' id="next-link" href="tf_circles.html" title="next page">Circles (tensorflow)</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

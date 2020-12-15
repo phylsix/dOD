@@ -1,0 +1,431 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>dOD.tf_model.layers &mdash; dOD unknown documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> dOD
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                unknown
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dOD</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>dOD.tf_model.layers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for dOD.tf_model.layers</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Layer</span><span class="p">,</span> <span class="n">LeakyReLU</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.initializers</span> <span class="kn">import</span> <span class="n">TruncatedNormal</span>
+
+
+<div class="viewcode-block" id="get_kernel_initializer"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.get_kernel_initializer">[docs]</a><span class="k">def</span> <span class="nf">get_kernel_initializer</span><span class="p">(</span><span class="n">filters</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                           <span class="n">kernel_size</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">TruncatedNormal</span><span class="p">:</span>
+    <span class="n">stddev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">kernel_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">kernel_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">filters</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">TruncatedNormal</span><span class="p">(</span><span class="n">stddev</span><span class="o">=</span><span class="n">stddev</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SequentialConv2DLayer"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.SequentialConv2DLayer">[docs]</a><span class="k">class</span> <span class="nc">SequentialConv2DLayer</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Encapsulate a sequence of Conv2D operations.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        ishape: input sample shape.</span>
+<span class="sd">        nlayer: number of Conv2D layers.</span>
+<span class="sd">        padding: padding scheme for Conv2D, &#39;same&#39; or &#39;valid&#39;.</span>
+<span class="sd">        strides: strides arg for Conv2D.</span>
+<span class="sd">        activation: activation arg for Conv2D.</span>
+<span class="sd">        drop_rate: drop_rate arg for Conv2D.</span>
+<span class="sd">        layers_conv2d: Conv2D layers.</span>
+<span class="sd">        layers_dropout: Dropout layers.</span>
+<span class="sd">        kernel_shape: convolution kernel shape.</span>
+<span class="sd">        kernel_initializer: kernel_initializer arg for Conv2D.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">kernel_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+                 <span class="n">nlayer</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">padding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;same&#39;</span><span class="p">,</span>
+                 <span class="n">strides</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="n">LeakyReLU</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+                 <span class="n">drop_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SequentialConv2DLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ishape</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># shape = [rows/height, cols/width, channels]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlayer</span> <span class="o">=</span> <span class="n">nlayer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">drop_rate</span> <span class="o">=</span> <span class="n">drop_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_conv2d</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers_dropout</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+
+        <span class="k">if</span> <span class="s2">&quot;input_shape&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ishape</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;input_shape&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_initializer</span> <span class="o">=</span> <span class="n">get_kernel_initializer</span><span class="p">(</span>
+            <span class="n">filters</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="c1"># First layer which contains input</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ishape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers_conv2d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+                    <span class="n">filters</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">,</span>
+                    <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">,</span>
+                    <span class="n">kernel_initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_initializer</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers_conv2d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+                    <span class="n">filters</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">,</span>
+                    <span class="n">input_shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ishape</span><span class="p">,</span>
+                    <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">,</span>
+                    <span class="n">kernel_initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_initializer</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_rate</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers_dropout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_rate</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># The rest</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nlayer</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers_conv2d</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+                    <span class="n">filters</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+                    <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">,</span>
+                    <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">,</span>
+                    <span class="n">kernel_initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_initializer</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_rate</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">layers_dropout</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_rate</span><span class="p">)</span>
+                <span class="p">)</span>
+
+<div class="viewcode-block" id="SequentialConv2DLayer.call"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.SequentialConv2DLayer.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+             <span class="n">inputs</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
+             <span class="n">training</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+             <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nlayer</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_conv2d</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">training</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">drop_rate</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers_dropout</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="SequentialConv2DLayer.get_config"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.SequentialConv2DLayer.get_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kernel_shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_shape</span><span class="p">,</span>
+                    <span class="n">nlayer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">nlayer</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span>
+                    <span class="n">strides</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strides</span><span class="p">,</span>
+                    <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">,</span>
+                    <span class="n">drop_rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">drop_rate</span><span class="p">,</span>
+                    <span class="o">**</span><span class="nb">super</span><span class="p">(</span><span class="n">SequentialConv2DLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_config</span><span class="p">())</span></div></div>
+
+
+<div class="viewcode-block" id="Conv2DTransposeLayer"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.Conv2DTransposeLayer">[docs]</a><span class="k">class</span> <span class="nc">Conv2DTransposeLayer</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Encapsulate Conv2DTranspose operation.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        kernel_shape: kernel size and filters.</span>
+<span class="sd">        padding: padding scheme for Conv2DTranspose.</span>
+<span class="sd">        strides: strides arg for Conv2DTranspose.</span>
+<span class="sd">        activation: activation arg for Conv2DTranspose.</span>
+<span class="sd">        kernel_initializer: kernel_initializer arg for Conv2DTranspose.</span>
+<span class="sd">        layer: holder of Conv2DTranspose.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">kernel_shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+                 <span class="n">padding</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;valid&#39;</span><span class="p">,</span>
+                 <span class="n">strides</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+                 <span class="n">activation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="n">LeakyReLU</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Conv2DTransposeLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_shape</span> <span class="o">=</span> <span class="n">kernel_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">padding</span> <span class="o">=</span> <span class="n">padding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strides</span> <span class="o">=</span> <span class="n">strides</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activation</span> <span class="o">=</span> <span class="n">activation</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernel_initializer</span> <span class="o">=</span> <span class="n">get_kernel_initializer</span><span class="p">(</span>
+            <span class="n">filters</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2DTranspose</span><span class="p">(</span>
+            <span class="n">filters</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span>
+            <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">,</span>
+            <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">,</span>
+            <span class="n">kernel_initializer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_initializer</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Conv2DTransposeLayer.call"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.Conv2DTransposeLayer.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">inputs</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="Conv2DTransposeLayer.get_config"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.Conv2DTransposeLayer.get_config">[docs]</a>    <span class="k">def</span> <span class="nf">get_config</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kernel_shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel_shape</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">padding</span><span class="p">,</span>
+                    <span class="n">strides</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">strides</span><span class="p">,</span>
+                    <span class="n">activation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">,</span>
+                    <span class="o">**</span><span class="nb">super</span><span class="p">(</span><span class="n">Conv2DTransposeLayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_config</span><span class="p">())</span></div></div>
+
+
+<div class="viewcode-block" id="CropConcatLayer"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.CropConcatLayer">[docs]</a><span class="k">class</span> <span class="nc">CropConcatLayer</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Crop a downstream output tensor and concat with a upstream output.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CropConcatLayer.call"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.CropConcatLayer.call">[docs]</a>    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x1</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">x2</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;implement crop-concat operation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x1: downstream output.</span>
+<span class="sd">            x2: upstream output.</span>
+
+<span class="sd">        Returns: tf.Tensor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># the shape of the tensor is [batch, rows, cols, channels]</span>
+        <span class="n">x1_shape</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+        <span class="n">x2_shape</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+
+        <span class="n">h_diff</span> <span class="o">=</span> <span class="n">x1_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x2_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">w_diff</span> <span class="o">=</span> <span class="n">x1_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">x2_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="n">h_diff_half</span> <span class="o">=</span> <span class="n">h_diff</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">w_diff_half</span> <span class="o">=</span> <span class="n">w_diff</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="n">down_layer_cropped</span> <span class="o">=</span> <span class="n">x1</span><span class="p">[:,</span>
+                                <span class="n">h_diff_half</span><span class="p">:</span> <span class="p">(</span><span class="n">x1_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">h_diff_half</span><span class="p">),</span>
+                                <span class="n">w_diff_half</span><span class="p">:</span> <span class="p">(</span><span class="n">x1_shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">w_diff_half</span><span class="p">),</span>
+                                <span class="p">:]</span>
+
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">down_layer_cropped</span><span class="p">,</span> <span class="n">x2</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="crop_to_shape"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.crop_to_shape">[docs]</a><span class="k">def</span> <span class="nf">crop_to_shape</span><span class="p">(</span><span class="n">X</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">tf</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+
+    <span class="n">x_diff</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y_diff</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">x_diff</span> <span class="o">==</span> <span class="n">y_diff</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">X</span>
+
+    <span class="n">x_diff_half</span> <span class="o">=</span> <span class="n">x_diff</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">y_diff_half</span> <span class="o">=</span> <span class="n">y_diff</span> <span class="o">//</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="n">x_diff_half</span><span class="p">:</span><span class="n">x_diff_half</span> <span class="o">-</span> <span class="n">x_diff</span><span class="p">,</span>
+             <span class="n">y_diff_half</span><span class="p">:</span><span class="n">y_diff_half</span> <span class="o">-</span> <span class="n">y_diff</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="crop_labels_to_shape"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.crop_labels_to_shape">[docs]</a><span class="k">def</span> <span class="nf">crop_labels_to_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">crop_to_shape</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">crop</span></div>
+
+
+<div class="viewcode-block" id="crop_image_labels_to_shape"><a class="viewcode-back" href="../../../api/dOD.tf_model.html#dOD.tf_model.layers.crop_image_labels_to_shape">[docs]</a><span class="k">def</span> <span class="nf">crop_image_labels_to_shape</span><span class="p">(</span><span class="n">shape</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">crop_to_shape</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">shape</span><span class="p">),</span> <span class="n">crop_to_shape</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">crop</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Weinan Si, Xiao Wang
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circles (tensorflow) &#8212; dOD notebooks</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Oxford-iiit-pet (tensorflow)" href="tf_oxford-iiit.html" />
+    <link rel="prev" title="Pre-request setup" href="dev_note.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">dOD notebooks</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="dev_note.html">
+   Pre-request setup
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Circles (tensorflow)
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tf_oxford-iiit.html">
+   Oxford-iiit-pet (tensorflow)
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/tf_circles.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/tf_circles.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="circles-tensorflow">
+<h1>Circles (tensorflow)<a class="headerlink" href="#circles-tensorflow" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_FORCE_GPU_ALLOW_GROWTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">from</span> <span class="nn">dOD.tf_model.model</span> <span class="kn">import</span> <span class="n">UNet</span>
+<span class="kn">from</span> <span class="nn">dOD.tf_model.datasets</span> <span class="kn">import</span> <span class="n">circles</span>
+<span class="kn">from</span> <span class="nn">dOD.tf_model.trainer</span> <span class="kn">import</span> <span class="n">Trainer</span>
+<span class="kn">from</span> <span class="nn">dOD.tf_model.layers</span> <span class="kn">import</span> <span class="n">crop_image_labels_to_shape</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circle_model</span> <span class="o">=</span> <span class="n">UNet</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">kernel_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                    <span class="n">root_feature</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">drop_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">circles</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">)</span>
+<span class="n">circle_model</span><span class="o">.</span><span class="n">build_net</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">circle_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-------- input shape: (None, 200, 200, 1)
+ downstream layer 0 shape: (None, 98, 98, 16)
+     downstream layer 1 shape: (None, 47, 47, 32)
+         downstream layer 2 shape: (None, 43, 43, 64)
+     upstream layer 1 shape: (None, 82, 82, 32)
+ upstream layer 0 shape: (None, 160, 160, 16)
+-------- output shape: (None, 160, 160, 2)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_ds</span><span class="p">,</span> <span class="n">test_ds</span> <span class="o">=</span> <span class="n">circles</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">nx</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">ny</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">splits</span><span class="o">=</span><span class="p">(</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">save_ckpt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">circle_model</span><span class="o">.</span><span class="n">net</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span>
+                      <span class="n">validation_dataset</span><span class="o">=</span><span class="n">validation_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.1553 - binary_crossentropy: 0.1553 - binary_accuracy: 0.9648 - val_loss: 0.0502 - val_binary_crossentropy: 0.0502 - val_binary_accuracy: 0.9858
+Epoch 2/25
+140/140 [==============================] - 4s 28ms/step - loss: 0.0585 - binary_crossentropy: 0.0585 - binary_accuracy: 0.9867 - val_loss: 0.0437 - val_binary_crossentropy: 0.0437 - val_binary_accuracy: 0.9880
+Epoch 3/25
+140/140 [==============================] - 4s 28ms/step - loss: 0.0407 - binary_crossentropy: 0.0407 - binary_accuracy: 0.9907 - val_loss: 0.0355 - val_binary_crossentropy: 0.0355 - val_binary_accuracy: 0.9892
+Epoch 4/25
+140/140 [==============================] - 4s 28ms/step - loss: 0.0406 - binary_crossentropy: 0.0406 - binary_accuracy: 0.9899 - val_loss: 0.0304 - val_binary_crossentropy: 0.0304 - val_binary_accuracy: 0.9913
+Epoch 5/25
+140/140 [==============================] - 4s 28ms/step - loss: 0.0334 - binary_crossentropy: 0.0334 - binary_accuracy: 0.9925 - val_loss: 0.0263 - val_binary_crossentropy: 0.0263 - val_binary_accuracy: 0.9932
+Epoch 6/25
+140/140 [==============================] - 4s 28ms/step - loss: 0.0296 - binary_crossentropy: 0.0296 - binary_accuracy: 0.9937 - val_loss: 0.0234 - val_binary_crossentropy: 0.0234 - val_binary_accuracy: 0.9945
+Epoch 7/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0272 - binary_crossentropy: 0.0272 - binary_accuracy: 0.9943 - val_loss: 0.0233 - val_binary_crossentropy: 0.0233 - val_binary_accuracy: 0.9944
+Epoch 8/25
+140/140 [==============================] - 4s 28ms/step - loss: 0.0257 - binary_crossentropy: 0.0257 - binary_accuracy: 0.9946 - val_loss: 0.0217 - val_binary_crossentropy: 0.0217 - val_binary_accuracy: 0.9948
+Epoch 9/25
+140/140 [==============================] - 4s 28ms/step - loss: 0.0241 - binary_crossentropy: 0.0241 - binary_accuracy: 0.9950 - val_loss: 0.0220 - val_binary_crossentropy: 0.0220 - val_binary_accuracy: 0.9950
+Epoch 10/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0233 - binary_crossentropy: 0.0233 - binary_accuracy: 0.9952 - val_loss: 0.0214 - val_binary_crossentropy: 0.0214 - val_binary_accuracy: 0.9955
+Epoch 11/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0225 - binary_crossentropy: 0.0225 - binary_accuracy: 0.9954 - val_loss: 0.0201 - val_binary_crossentropy: 0.0201 - val_binary_accuracy: 0.9959
+Epoch 12/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0211 - binary_crossentropy: 0.0211 - binary_accuracy: 0.9956 - val_loss: 0.0178 - val_binary_crossentropy: 0.0178 - val_binary_accuracy: 0.9962
+Epoch 13/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0210 - binary_crossentropy: 0.0210 - binary_accuracy: 0.9957 - val_loss: 0.0193 - val_binary_crossentropy: 0.0193 - val_binary_accuracy: 0.9958
+Epoch 14/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0206 - binary_crossentropy: 0.0206 - binary_accuracy: 0.9957 - val_loss: 0.0180 - val_binary_crossentropy: 0.0180 - val_binary_accuracy: 0.9960
+Epoch 15/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0199 - binary_crossentropy: 0.0199 - binary_accuracy: 0.9959 - val_loss: 0.0191 - val_binary_crossentropy: 0.0191 - val_binary_accuracy: 0.9961
+Epoch 16/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0199 - binary_crossentropy: 0.0199 - binary_accuracy: 0.9959 - val_loss: 0.0197 - val_binary_crossentropy: 0.0197 - val_binary_accuracy: 0.9961
+Epoch 17/25
+140/140 [==============================] - 4s 30ms/step - loss: 0.0199 - binary_crossentropy: 0.0199 - binary_accuracy: 0.9957 - val_loss: 0.0187 - val_binary_crossentropy: 0.0187 - val_binary_accuracy: 0.9961
+Epoch 18/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0191 - binary_crossentropy: 0.0191 - binary_accuracy: 0.9961 - val_loss: 0.0187 - val_binary_crossentropy: 0.0187 - val_binary_accuracy: 0.9961
+Epoch 19/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0189 - binary_crossentropy: 0.0189 - binary_accuracy: 0.9961 - val_loss: 0.0184 - val_binary_crossentropy: 0.0184 - val_binary_accuracy: 0.9962
+Epoch 20/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0189 - binary_crossentropy: 0.0189 - binary_accuracy: 0.9961 - val_loss: 0.0187 - val_binary_crossentropy: 0.0187 - val_binary_accuracy: 0.9963
+Epoch 21/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0184 - binary_crossentropy: 0.0184 - binary_accuracy: 0.9962 - val_loss: 0.0185 - val_binary_crossentropy: 0.0185 - val_binary_accuracy: 0.9963
+Epoch 22/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0183 - binary_crossentropy: 0.0183 - binary_accuracy: 0.9963 - val_loss: 0.0184 - val_binary_crossentropy: 0.0184 - val_binary_accuracy: 0.9963
+Epoch 23/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0181 - binary_crossentropy: 0.0181 - binary_accuracy: 0.9963 - val_loss: 0.0182 - val_binary_crossentropy: 0.0182 - val_binary_accuracy: 0.9963
+Epoch 24/25
+140/140 [==============================] - 4s 30ms/step - loss: 0.0177 - binary_crossentropy: 0.0177 - binary_accuracy: 0.9963 - val_loss: 0.0181 - val_binary_crossentropy: 0.0181 - val_binary_accuracy: 0.9963
+Epoch 25/25
+140/140 [==============================] - 4s 29ms/step - loss: 0.0179 - binary_crossentropy: 0.0179 - binary_accuracy: 0.9963 - val_loss: 0.0179 - val_binary_crossentropy: 0.0179 - val_binary_accuracy: 0.9963
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prediction</span> <span class="o">=</span> <span class="n">circle_model</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_ds</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                       <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.015</span><span class="p">})</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">test_ds</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">crop_image_labels_to_shape</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">N</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">array_to_img</span><span class="p">(</span><span class="n">img</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">prediction</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/tf_circles_7_0.svg" src="_images/tf_circles_7_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
+<span class="n">val_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span> <span class="n">train_loss</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span> <span class="n">val_loss</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training and validation loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/tf_circles_8_0.svg" src="_images/tf_circles_8_0.svg" /></div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="dev_note.html" title="previous page">Pre-request setup</a>
+    <a class='right-next' id="next-link" href="tf_oxford-iiit.html" title="next page">Oxford-iiit-pet (tensorflow)</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

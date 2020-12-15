@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oxford-iiit-pet (tensorflow) &#8212; dOD notebooks</title>
+    
+  <link rel="stylesheet" href="_static/css/index.73d71520a4ca3b99cfee5594769eaaae.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.3da636dd464baa7582d2.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Circles (tensorflow)" href="tf_circles.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">dOD notebooks</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="dev_note.html">
+   Pre-request setup
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="tf_circles.html">
+   Circles (tensorflow)
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Oxford-iiit-pet (tensorflow)
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/tf_oxford-iiit.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/tf_oxford-iiit.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="oxford-iiit-pet-tensorflow">
+<h1>Oxford-iiit-pet (tensorflow)<a class="headerlink" href="#oxford-iiit-pet-tensorflow" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TF_FORCE_GPU_ALLOW_GROWTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">from</span> <span class="nn">dOD.tf_model.model</span> <span class="kn">import</span> <span class="n">UNet</span>
+<span class="kn">from</span> <span class="nn">dOD.tf_model.datasets</span> <span class="kn">import</span> <span class="n">oxford_iiit</span>
+<span class="kn">from</span> <span class="nn">dOD.tf_model.trainer</span> <span class="kn">import</span> <span class="n">Trainer</span>
+
+<span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">oxford_iiit</span><span class="o">.</span><span class="n">IMAGE_SIZE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_ds</span><span class="p">,</span> <span class="n">test_ds</span> <span class="o">=</span> <span class="n">oxford_iiit</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modelMaker</span> <span class="o">=</span> <span class="n">UNet</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">oxford_iiit</span><span class="o">.</span><span class="n">CHANNELS</span><span class="p">),</span> <span class="n">kernel_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">nlayer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                               <span class="n">root_feature</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span>
+                               <span class="n">drop_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">oxford_iiit</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">)</span>
+<span class="n">modelMaker</span><span class="o">.</span><span class="n">build_net</span><span class="p">()</span>
+<span class="n">modelMaker</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+                   <span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(),</span>
+                   <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sparse_categorical_crossentropy&#39;</span><span class="p">,</span> <span class="s1">&#39;sparse_categorical_accuracy&#39;</span><span class="p">])</span>
+<span class="n">modelMaker</span><span class="o">.</span><span class="n">describle</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-------- input shape: (None, 128, 128, 3)
+    &gt; layer 0 shape: (None, 128, 128, 64)
+    &gt; layer 1 shape: (None, 128, 128, 64)
+    downstream layer 1 shape: (None, 128, 128, 64)
+        &gt; layer 0 shape: (None, 64, 64, 128)
+        &gt; layer 1 shape: (None, 64, 64, 128)
+        downstream layer 2 shape: (None, 64, 64, 128)
+            &gt; layer 0 shape: (None, 32, 32, 256)
+            &gt; layer 1 shape: (None, 32, 32, 256)
+            downstream layer 3 shape: (None, 32, 32, 256)
+                &gt; layer 0 shape: (None, 16, 16, 512)
+                &gt; layer 1 shape: (None, 16, 16, 512)
+                downstream layer 4 shape: (None, 16, 16, 512)
+                    &gt; layer 0 shape: (None, 8, 8, 1024)
+                    &gt; layer 1 shape: (None, 8, 8, 1024)
+                    bottom layer 5 shape: (None, 8, 8, 1024)
+                &gt; layer 0 shape: (None, 16, 16, 512)
+                &gt; layer 1 shape: (None, 16, 16, 512)
+                upstream layer 4 shape: (None, 16, 16, 512)
+            &gt; layer 0 shape: (None, 32, 32, 256)
+            &gt; layer 1 shape: (None, 32, 32, 256)
+            upstream layer 3 shape: (None, 32, 32, 256)
+        &gt; layer 0 shape: (None, 64, 64, 128)
+        &gt; layer 1 shape: (None, 64, 64, 128)
+        upstream layer 2 shape: (None, 64, 64, 128)
+    &gt; layer 0 shape: (None, 128, 128, 64)
+    &gt; layer 1 shape: (None, 128, 128, 64)
+    upstream layer 1 shape: (None, 128, 128, 64)
+-------- output shape: (None, 128, 128, 3)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">logbase</span><span class="o">=</span><span class="s1">&#39;./logs/oxford&#39;</span><span class="p">)</span>
+<span class="n">hisotry</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">modelMaker</span><span class="o">.</span><span class="n">net</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_dataset</span><span class="o">=</span><span class="n">test_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/25
+  2/115 [..............................] - ETA: 1:48 - loss: 0.3751 - sparse_categorical_crossentropy: 0.3751 - sparse_categorical_accuracy: 0.8553WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.4798s vs `on_train_batch_end` time: 0.7489s). Check your callbacks.
+WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.4798s vs `on_train_batch_end` time: 0.7489s). Check your callbacks.
+115/115 [==============================] - 171s 1s/step - loss: 0.3674 - sparse_categorical_crossentropy: 0.3674 - sparse_categorical_accuracy: 0.8535 - val_loss: 0.4451 - val_sparse_categorical_crossentropy: 0.4451 - val_sparse_categorical_accuracy: 0.8291
+Epoch 2/25
+115/115 [==============================] - 171s 1s/step - loss: 0.3613 - sparse_categorical_crossentropy: 0.3613 - sparse_categorical_accuracy: 0.8558 - val_loss: 0.4239 - val_sparse_categorical_crossentropy: 0.4239 - val_sparse_categorical_accuracy: 0.8327
+Epoch 3/25
+115/115 [==============================] - 171s 1s/step - loss: 0.3496 - sparse_categorical_crossentropy: 0.3496 - sparse_categorical_accuracy: 0.8612 - val_loss: 0.4211 - val_sparse_categorical_crossentropy: 0.4211 - val_sparse_categorical_accuracy: 0.8348
+Epoch 4/25
+115/115 [==============================] - 170s 1s/step - loss: 0.3540 - sparse_categorical_crossentropy: 0.3540 - sparse_categorical_accuracy: 0.8587 - val_loss: 0.4380 - val_sparse_categorical_crossentropy: 0.4380 - val_sparse_categorical_accuracy: 0.8270
+Epoch 5/25
+115/115 [==============================] - 169s 1s/step - loss: 0.3473 - sparse_categorical_crossentropy: 0.3473 - sparse_categorical_accuracy: 0.8608 - val_loss: 0.4271 - val_sparse_categorical_crossentropy: 0.4271 - val_sparse_categorical_accuracy: 0.8354
+Epoch 6/25
+115/115 [==============================] - 170s 1s/step - loss: 0.3534 - sparse_categorical_crossentropy: 0.3534 - sparse_categorical_accuracy: 0.8585 - val_loss: 0.4561 - val_sparse_categorical_crossentropy: 0.4561 - val_sparse_categorical_accuracy: 0.8241
+Epoch 7/25
+115/115 [==============================] - 170s 1s/step - loss: 0.3520 - sparse_categorical_crossentropy: 0.3520 - sparse_categorical_accuracy: 0.8593 - val_loss: 0.4502 - val_sparse_categorical_crossentropy: 0.4502 - val_sparse_categorical_accuracy: 0.8249
+Epoch 8/25
+115/115 [==============================] - 171s 1s/step - loss: 0.3412 - sparse_categorical_crossentropy: 0.3412 - sparse_categorical_accuracy: 0.8629 - val_loss: 0.4120 - val_sparse_categorical_crossentropy: 0.4120 - val_sparse_categorical_accuracy: 0.8384
+Epoch 9/25
+115/115 [==============================] - 169s 1s/step - loss: 0.3369 - sparse_categorical_crossentropy: 0.3369 - sparse_categorical_accuracy: 0.8648 - val_loss: 0.4410 - val_sparse_categorical_crossentropy: 0.4410 - val_sparse_categorical_accuracy: 0.8306
+Epoch 10/25
+115/115 [==============================] - 145s 1s/step - loss: 0.3570 - sparse_categorical_crossentropy: 0.3570 - sparse_categorical_accuracy: 0.8574 - val_loss: 0.4206 - val_sparse_categorical_crossentropy: 0.4206 - val_sparse_categorical_accuracy: 0.8318
+Epoch 11/25
+115/115 [==============================] - 107s 928ms/step - loss: 0.3369 - sparse_categorical_crossentropy: 0.3369 - sparse_categorical_accuracy: 0.8647 - val_loss: 0.3942 - val_sparse_categorical_crossentropy: 0.3942 - val_sparse_categorical_accuracy: 0.8477
+Epoch 12/25
+115/115 [==============================] - 109s 947ms/step - loss: 0.3456 - sparse_categorical_crossentropy: 0.3456 - sparse_categorical_accuracy: 0.8618 - val_loss: 0.4478 - val_sparse_categorical_crossentropy: 0.4478 - val_sparse_categorical_accuracy: 0.8246
+Epoch 13/25
+115/115 [==============================] - 108s 937ms/step - loss: 0.3378 - sparse_categorical_crossentropy: 0.3378 - sparse_categorical_accuracy: 0.8645 - val_loss: 0.4297 - val_sparse_categorical_crossentropy: 0.4297 - val_sparse_categorical_accuracy: 0.8251
+Epoch 14/25
+115/115 [==============================] - 109s 951ms/step - loss: 0.3365 - sparse_categorical_crossentropy: 0.3365 - sparse_categorical_accuracy: 0.8646 - val_loss: 0.4275 - val_sparse_categorical_crossentropy: 0.4275 - val_sparse_categorical_accuracy: 0.8352
+Epoch 15/25
+115/115 [==============================] - 108s 943ms/step - loss: 0.3357 - sparse_categorical_crossentropy: 0.3357 - sparse_categorical_accuracy: 0.8653 - val_loss: 0.4199 - val_sparse_categorical_crossentropy: 0.4199 - val_sparse_categorical_accuracy: 0.8335
+Epoch 16/25
+115/115 [==============================] - 108s 938ms/step - loss: 0.3285 - sparse_categorical_crossentropy: 0.3285 - sparse_categorical_accuracy: 0.8680 - val_loss: 0.4235 - val_sparse_categorical_crossentropy: 0.4235 - val_sparse_categorical_accuracy: 0.8277
+Epoch 17/25
+115/115 [==============================] - 107s 931ms/step - loss: 0.3288 - sparse_categorical_crossentropy: 0.3288 - sparse_categorical_accuracy: 0.8682 - val_loss: 0.4258 - val_sparse_categorical_crossentropy: 0.4258 - val_sparse_categorical_accuracy: 0.8330
+Epoch 18/25
+115/115 [==============================] - 107s 929ms/step - loss: 0.3304 - sparse_categorical_crossentropy: 0.3304 - sparse_categorical_accuracy: 0.8675 - val_loss: 0.3958 - val_sparse_categorical_crossentropy: 0.3958 - val_sparse_categorical_accuracy: 0.8453
+Epoch 19/25
+115/115 [==============================] - 109s 948ms/step - loss: 0.3303 - sparse_categorical_crossentropy: 0.3303 - sparse_categorical_accuracy: 0.8673 - val_loss: 0.4175 - val_sparse_categorical_crossentropy: 0.4175 - val_sparse_categorical_accuracy: 0.8441
+Epoch 20/25
+115/115 [==============================] - 109s 950ms/step - loss: 0.3259 - sparse_categorical_crossentropy: 0.3259 - sparse_categorical_accuracy: 0.8691 - val_loss: 0.4064 - val_sparse_categorical_crossentropy: 0.4064 - val_sparse_categorical_accuracy: 0.8400
+Epoch 21/25
+115/115 [==============================] - 109s 949ms/step - loss: 0.3260 - sparse_categorical_crossentropy: 0.3260 - sparse_categorical_accuracy: 0.8691 - val_loss: 0.3867 - val_sparse_categorical_crossentropy: 0.3867 - val_sparse_categorical_accuracy: 0.8516
+Epoch 22/25
+115/115 [==============================] - 110s 958ms/step - loss: 0.3186 - sparse_categorical_crossentropy: 0.3186 - sparse_categorical_accuracy: 0.8717 - val_loss: 0.3699 - val_sparse_categorical_crossentropy: 0.3699 - val_sparse_categorical_accuracy: 0.8527
+Epoch 23/25
+115/115 [==============================] - 108s 941ms/step - loss: 0.3217 - sparse_categorical_crossentropy: 0.3217 - sparse_categorical_accuracy: 0.8704 - val_loss: 0.4075 - val_sparse_categorical_crossentropy: 0.4075 - val_sparse_categorical_accuracy: 0.8380
+Epoch 24/25
+115/115 [==============================] - 107s 931ms/step - loss: 0.3273 - sparse_categorical_crossentropy: 0.3273 - sparse_categorical_accuracy: 0.8684 - val_loss: 0.3805 - val_sparse_categorical_crossentropy: 0.3805 - val_sparse_categorical_accuracy: 0.8504
+Epoch 25/25
+115/115 [==============================] - 107s 934ms/step - loss: 0.3232 - sparse_categorical_crossentropy: 0.3232 - sparse_categorical_accuracy: 0.8692 - val_loss: 0.3890 - val_sparse_categorical_crossentropy: 0.3890 - val_sparse_categorical_accuracy: 0.8467
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">hisotry</span>
+<span class="n">train_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
+<span class="n">val_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">25</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">train_loss</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">val_loss</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training and validation loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/tf_oxford-iiit_5_0.svg" src="_images/tf_oxford-iiit_5_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                         <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_ds</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">1</span><span class="p">)):</span>
+    <span class="n">prediction</span> <span class="o">=</span> <span class="n">modelMaker</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>    
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">]):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/tf_oxford-iiit_6_0.svg" src="_images/tf_oxford-iiit_6_0.svg" /></div>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="tf_circles.html" title="previous page">Circles (tensorflow)</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By The Jupyter Book community<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.3da636dd464baa7582d2.js"></script>
+
+
+    
+  </body>
+</html>

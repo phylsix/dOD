@@ -1,0 +1,18 @@
+dOD package
+===========
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dOD.tf_model
+
+Module contents
+---------------
+
+.. automodule:: dOD
+   :members:
+   :undoc-members:
+   :show-inheritance:
