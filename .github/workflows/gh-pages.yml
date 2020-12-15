@@ -27,7 +27,7 @@ jobs:
           jb build --path-output build/jupyter-book notebooks
           mkdir -p site/docs site/notebooks
           mv build/sphinx/html/* site/docs
-          mv build/jupyter-book/html/* site/notebooks
+          mv build/jupyter-book/_build/html/* site/notebooks
 
       - name: GitHub Pages action
         uses: peaceiris/actions-gh-pages@v3
