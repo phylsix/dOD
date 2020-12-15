@@ -17,6 +17,11 @@ def build_logpath(root: Optional[str] = 'unet') -> str:
                         "{epoch:04d}.ckpt")
 
 
+def get_output_shape(model: Model,
+                     train_dataset: tf.data.Dataset) -> tf.Tensor:
+    return model.predict(train_dataset.take(1).batch(batch_size=1)).shape
+
+
 class Trainer:
     """Manager of training activities, mainly `fit`.
 
@@ -74,10 +79,6 @@ class Trainer:
 
         return callbacks
 
-    def get_output_shape(self, model: Model,
-                         train_dataset: tf.data.Dataset) -> tf.Tensor:
-        return model.predict(train_dataset.take(1).batch(batch_size=1)).shape
-
     def fit(self,
             model: Model,
             train_dataset: tf.data.Dataset,
@@ -103,7 +104,7 @@ class Trainer:
             History: history of training.
         """
 
-        out_shape = self.get_output_shape(model, train_dataset)[1:]
+        out_shape = get_output_shape(model, train_dataset)[1:]
 
         train_dataset = train_dataset.map(
             layers.crop_labels_to_shape(out_shape)).batch(batch_size)

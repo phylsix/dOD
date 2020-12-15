@@ -156,7 +156,7 @@ class UNet:
                         for j, c in enumerate(x.layers_conv2d)]
                 desc.append(f'{name} {nlayer} shape: {x.output_shape}')
 
-                for l in desc:
-                    print(' ' * 4 * nlayer + l)
+                for line in desc:
+                    print(' ' * 4 * nlayer + line)
             if i == N - 1:
                 print(f'-------- output shape: {x.output_shape}')

@@ -2,7 +2,7 @@ from typing import Any, Callable, Dict, Optional, Tuple, Union
 
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.layers import Layer, LeakyReLU
+from tensorflow.keras.layers import Layer
 from tensorflow.keras.initializers import TruncatedNormal
 
 
@@ -33,7 +33,7 @@ class SequentialConv2DLayer(Layer):
                  nlayer: int,
                  padding: str = 'same',
                  strides: int = 1,
-                 activation: Optional[Union[str, Callable]] = LeakyReLU(alpha=0.2),
+                 activation: Optional[Union[str, Callable]] = 'relu',
                  drop_rate: float = 0., **kwargs) -> None:
         super(SequentialConv2DLayer, self).__init__(**kwargs)
 
@@ -136,7 +136,7 @@ class Conv2DTransposeLayer(Layer):
                  kernel_shape: Tuple[int, int, int],
                  padding: str = 'valid',
                  strides: int = 2,
-                 activation: Optional[Union[str, Callable]] = LeakyReLU(alpha=0.2),
+                 activation: Optional[Union[str, Callable]] = 'relu',
                  **kwargs) -> None:
         super(Conv2DTransposeLayer, self).__init__(**kwargs)
 
