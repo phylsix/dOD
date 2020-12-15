@@ -1,23 +1,40 @@
 from typing import Callable, Optional, Tuple, Union, List
 
 import tensorflow as tf
+from tensorflow.keras.layers import LeakyReLU
 
-from layers import (SequentialConv2DLayer,
-                    Conv2DTransposeLayer,
-                    CropConcatLayer)
+from dOD.tf_model import layers
 
 
 class UNet:
+    """Model implementing U-net.
+
+    Attributes:
+        ishape: input sample shape.
+        nx: input shape dimension 0.
+        ny: input shape dimension 1.
+        channels: input shape dimension 2.
+        kshape: convolution kernel shape.
+        root_feature: number of features of the first convolution after input.
+        nlayer: number of convolutions in a sequence.
+        depth: depth of U-net.
+        drop_rate: drop rate after each convolution operation.
+        padding: padding scheme for convolution, 'same' or 'valid'.
+        activation: activation function to call for convolution.
+        pool_size: kernal size for MaxPooling2D and Conv2DTranspose.
+        num_classes: number of possible classes for each pixel.
+        net: model holder.
+    """
 
     def __init__(self,
-                 input_shape: Tuple(int, int, int),
-                 kernel_shape: Tuple(int, int),
+                 input_shape: Tuple[int, int, int],
+                 kernel_shape: Tuple[int, int],
                  root_feature: int = 64,
                  nlayer: int = 2,
                  depth: int = 3,
                  drop_rate: float = 0.,
-                 padding: str = "valid",
-                 activation: Optional[Union[str, Callable]] = "relu",
+                 padding: str = "same",
+                 activation: Optional[Union[str, Callable]] = LeakyReLU(0.2),
                  pool_size: int = 2,
                  num_classes: int = 2) -> None:
 
@@ -35,15 +52,14 @@ class UNet:
         self.pool_size = pool_size
         self.num_classes = num_classes
 
-        self.layers_downstream = {}
-        # self.layers_upstream = {}
-
         self.net = None
 
-    def buildNet(self, verbose: bool = False) -> None:
-        inputs = tf.keras.Input(
-            shape=self.ishape, name="inputs", dtype=tf.float32)
+    def build_net(self) -> None:
 
+        downstream_layers = {}
+        inputs = tf.keras.Input(shape=self.ishape, name="inputs")
+
+        # downstream
         x = inputs
         for idepth in range(self.depth):
             curr_feature = 2 ** idepth * self.root_feature
@@ -51,7 +67,6 @@ class UNet:
                 "kernel_shape": (self.kshape[0], self.kshape[1], curr_feature),
                 "nlayer": self.nlayer,
                 "padding": self.padding,
-                "strides": (self.pool_size, self.pool_size),
                 "activation": self.activation,
                 "drop_rate": self.drop_rate,
             }
@@ -59,37 +74,31 @@ class UNet:
             if idepth == 0:
                 conv_params['input_shape'] = self.ishape
 
-            x = SequentialConv2DLayer(**conv_params)(x)
-            self.layers_downstream[idepth] = x
+            x = layers.SequentialConv2DLayer(**conv_params)(x)
+            downstream_layers[idepth] = x
 
             if idepth < self.depth-1:
                 x = tf.keras.layers.MaxPooling2D(
                     (self.pool_size, self.pool_size))(x)
 
-            if verbose:
-                print(f"-------- downstream layer {idepth} shape: {x.shape}")
-
-        for idepth in range(self.depth - 1, -1, -1):
+        # upstream
+        for idepth in range(self.depth - 2, -1, -1):
             curr_feature = 2 ** idepth * self.root_feature
 
-            x = Conv2DTransposeLayer(kernel_shape=(self.pool_size, self.pool_size, curr_feature // 2),
-                                     padding=self.padding,
-                                     strides=self.pool_size,
-                                     activation=self.activation)(x)
+            x = layers.Conv2DTransposeLayer(
+                kernel_shape=(self.pool_size, self.pool_size, curr_feature),
+                padding=self.padding,
+                strides=self.pool_size,
+                activation=self.activation)(x)
 
-            x = CropConcatLayer()(self.layers_downstream[idepth], x)
+            x = layers.CropConcatLayer()(downstream_layers[idepth], x)
 
-            x = SequentialConv2DLayer(kernel_shape=(self.kshape[0], self.kshape[1], curr_feature),
-                                      nlayer=self.nlayer,
-                                      padding=self.padding,
-                                      strides=(self.pool_size, self.pool_size),
-                                      activation=self.activation,
-                                      drop_rate=self.drop_rate)(x)
-
-            if verbose:
-                print(f"-------- upstream layer {idepth} shape: {x.shape}")
-
-            # self.layers_upstream[self.depth-idepth-1] = x
+            x = layers.SequentialConv2DLayer(
+                kernel_shape=(self.kshape[0], self.kshape[1], curr_feature),
+                nlayer=self.nlayer,
+                padding=self.padding,
+                activation=self.activation,
+                drop_rate=self.drop_rate)(x)
 
         x = tf.keras.layers.Conv2D(filters=self.num_classes,
                                    kernel_size=(1, 1),
@@ -97,9 +106,6 @@ class UNet:
                                    activation=self.activation)(x)
 
         outputs = tf.keras.layers.Activation("softmax", name="outputs")(x)
-
-        if verbose:
-            print("-------- output shape:", outputs.shape)
 
         self.net = tf.keras.Model(inputs, outputs, name="UNet")
 
@@ -110,7 +116,7 @@ class UNet:
                 **kwargs) -> None:
 
         if not self.net:
-            self.buildNet()
+            self.build_net()
 
         if optimizer is None:
             optimizer = tf.optimizers.Adam(**kwargs)
@@ -121,3 +127,36 @@ class UNet:
         self.net.compile(loss=loss,
                          optimizer=optimizer,
                          metrics=metrics)
+
+    def describle(self) -> None:
+        """print the architecture of the net with output shape annotated.
+        """
+
+        if not self.net:
+            self.build_net()
+
+        N = len(self.net.layers)
+        nSeqConv = 0
+        for i, x in enumerate(self.net.layers):
+            if i == 0:
+                print(f'-------- input shape: {x.output_shape[0]}')
+            if isinstance(x, layers.SequentialConv2DLayer):
+                nSeqConv += 1
+                if nSeqConv < self.depth:
+                    name = 'downstream layer'
+                    nlayer = nSeqConv
+                elif nSeqConv == self.depth:
+                    name = 'bottom layer'
+                    nlayer = nSeqConv
+                else:
+                    name = 'upstream layer'
+                    nlayer = 2 * self.depth - nSeqConv
+
+                desc = [f'> layer {j} shape: {c.output_shape}'
+                        for j, c in enumerate(x.layers_conv2d)]
+                desc.append(f'{name} {nlayer} shape: {x.output_shape}')
+
+                for l in desc:
+                    print(' ' * 4 * nlayer + l)
+            if i == N - 1:
+                print(f'-------- output shape: {x.output_shape}')

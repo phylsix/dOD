@@ -1,10 +1,10 @@
 from typing import Tuple
 import functools
 
-import numpy as np
 import tensorflow as tf
 import tensorflow_datasets as tfds
 
+# https://www.tensorflow.org/tutorials/images/segmentation
 
 # tfds.core.DatasetInfo(
 #     name='oxford_iiit_pet',
@@ -42,9 +42,11 @@ IMAGE_SIZE = (128, 128)
 CHANNELS = 3
 CLASSES = 3
 
+AUTOTUNE = tf.data.experimental.AUTOTUNE
+
 
 def _normalize(img, mask):
-    img = tf.cast(img, tf.float32) / 255
+    img = tf.cast(img, tf.float32) / 255.
     mask -= 1
     return img, mask
 
@@ -53,17 +55,18 @@ def _load_image(data, training=True):
     img = tf.image.resize(data['image'], IMAGE_SIZE)
     mask = tf.image.resize(data['segmentation_mask'], IMAGE_SIZE)
 
-    if training and np.random.uniform() > 0.5:
+    if training and tf.random.uniform(()) > 0.5:
+        # random mirroring
         img = tf.image.flip_left_right(img)
         mask = tf.image.flip_left_right(mask)
 
     return _normalize(img, mask)
 
 
-def load_data(buffer_size: int = 1000) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
+def load_data(
+    buffer_size: int = 1000) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
     ds, ds_info = tfds.load('oxford_iiit_pet', with_info=True)
-    train_ds = ds['train'].map(_load_image,
-                               num_parallel_calls=tf.data.experimental.AUTOTUNE)
+    train_ds = ds['train'].map(_load_image, num_parallel_calls=AUTOTUNE)
     test_ds = ds['test'].map(functools.partial(_load_image, training=False))
 
     train_ds = train_ds.cache().shuffle(buffer_size).take(

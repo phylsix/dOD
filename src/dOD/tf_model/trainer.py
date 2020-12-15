@@ -1,61 +1,82 @@
-from typing import Optional, Union, List
+from typing import Optional, Tuple, Union, List
 import os
 from datetime import datetime
 
 import tensorflow as tf
 from tensorflow.keras import Model
-from tensorflow.keras.callbacks import Callback, ModelCheckpoint, History
+from tensorflow.keras.callbacks import (
+    Callback, ModelCheckpoint, History, TensorBoard)
 
-from .layers import crop_labels_to_shape
+from dOD.tf_model import layers
+from dOD.tf_model.callbacks import TBLearningRate
 
 
 def build_logpath(root: Optional[str] = 'unet') -> str:
-    return os.path.join(root, datetime.now().strftime("%y%m%d-%H%M%S"))
+    return os.path.join(root,
+                        datetime.now().strftime("%y%m%d-%H%M%S"),
+                        "{epoch:04d}.ckpt")
+
 
 class Trainer:
+    """Manager of training activities, mainly `fit`.
+
+    Attributes:
+        callbacks: a list of callbacks to call during training.
+        logbase: a string of base path to save training logs.
+        save_checkpoint: a boolean flag to ask `Trainer` to add a
+            `ModelCheckpoint` callback by itself.
+        opts: a dictionary to save addtional kwargs used for customization.
+    """
+
     def __init__(self,
                  callbacks: Union[None, List[Callback]] = None,
-                 logbase : Optional[str] = None,
-                 save_ckpt: bool = True,
-                 save_TB_learningrate: bool = True,
-                 save_TB_imagesummary: bool = True) -> None:
+                 logbase: Optional[str] = None,
+                 save_checkpoint: bool = True,
+                 **kwargs) -> None:
 
         self.callbacks = callbacks
-        self.save_ckpt = save_ckpt
+        self.save_checkpoint = save_checkpoint
+        self.opts = kwargs
 
-        # TODO implement those callbacks
-        self.save_TB_learningrate = save_TB_learningrate
-        self.save_TB_imagesummary = save_TB_imagesummary
+        self.logpath = build_logpath(logbase) if logbase else None
 
-        self.logpath = build_logpath(logbase)
+    def build_callbacks(self) -> List[Callback]:
+        """Build callbacks to be called for training.
 
-    def get_output_shape(self,
-                         model: Model,
-                         train_dataset: tf.data.Dataset) -> tf.Tensor:
-        return model.predict(train_dataset.take(1).batch(batch_size=1)).shape
+        implictly includes:
 
-    def build_callbacks(self,
-                        train_dataset: tf.data.Dataset,
-                        validation_dataset: Optional[tf.data.Dataset]) -> List[Callback]:
+        - `ModelCheckpoint` when `save_checkpoint` \
+            (save_freq='epoch', save_best_only=True, save_weights_only=True)
+        - `TensorBoard`
+        - `TBLearningRate`
+
+        if they are not included in the constructor.
+
+        Returns:
+            List[Callback]: assembled callbacks.
+        """
         callbacks = self.callbacks if self.callbacks else []
-        if self.save_ckpt:
-            callbacks.append(ModelCheckpoint(self.logpath,
-                                             save_best_only=True))
 
-        if self.save_TB_learningrate:
-            pass
-            # callbacks.append()
+        # ModelCheckpoint
+        if self.save_checkpoint and \
+                not any(isinstance(cb, ModelCheckpoint) for cb in callbacks):
+            callbacks.append(ModelCheckpoint(
+                self.logpath,
+                save_best_only=True,
+                save_weights_only=True,
+                save_freq=self.opts.get('save_freq', 'epoch'))
+            )
 
-        if self.save_TB_imagesummary:
-            pass
-            # callbacks.append()
-            if validation_dataset:
-                pass
-                # callbacks.append()
+        # TensorBoard
+        if self.logpath:
+            callbacks.append(TensorBoard(self.logpath))
+            # callbacks.append(TBLearningRate(self.logpath))
 
         return callbacks
 
-
+    def get_output_shape(self, model: Model,
+                         train_dataset: tf.data.Dataset) -> tf.Tensor:
+        return model.predict(train_dataset.take(1).batch(batch_size=1)).shape
 
     def fit(self,
             model: Model,
@@ -65,27 +86,65 @@ class Trainer:
             epochs: int = 10,
             batch_size: int = 1,
             **kwargs) -> History:
+        """Train the model with given setting, perform evaluation if
+            `test_dataset` provided.
 
-        out_shape = self.get_output_shape(model, train_dataset)
+        Args:
+            model: the model to be fit.
+            train_dataset: a training dataset passed to `model.fit()`.
+            validation_dataset:
+                validation dataset passed to `model.fit()`. Defaults to None.
+            test_dataset:
+                test dataset passed to `model.evaluate()`. Defaults to None.
+            epochs: number of epochs to train. Defaults to 10.
+            batch_size: number of samples per batch. Defaults to 1.
+
+        Returns:
+            History: history of training.
+        """
+
+        out_shape = self.get_output_shape(model, train_dataset)[1:]
 
         train_dataset = train_dataset.map(
-            crop_labels_to_shape(out_shape)).batch(batch_size)
+            layers.crop_labels_to_shape(out_shape)).batch(batch_size)
+        train_dataset = train_dataset.prefetch(
+            buffer_size=tf.data.experimental.AUTOTUNE)
         if validation_dataset:
             validation_dataset = validation_dataset.map(
-                crop_labels_to_shape(out_shape)).batch((batch_size))
+                layers.crop_labels_to_shape(out_shape)).batch((batch_size))
 
-        callbacks = self.build_callbacks(train_dataset, validation_dataset)
+        callbacks = self.build_callbacks()
 
         history = model.fit(train_dataset,
-                            validation_dataset=validation_dataset,
+                            validation_data=validation_dataset,
                             epochs=epochs,
                             callbacks=callbacks,
                             **kwargs)
 
         if test_dataset:
             test_dataset = test_dataset\
-                .map(crop_labels_to_shape(out_shape))\
+                .map(layers.crop_labels_to_shape(out_shape))\
                 .batch(batch_size)
             model.evaluate(test_dataset)
 
         return history
+
+    def evaluate(self,
+                 model: Model,
+                 test_dataset: Optional[tf.data.Dataset] = None,
+                 shape: Tuple[int, int, int] = None) -> None:
+        """evaluate test_dataset.
+
+        Args:
+            model: model to evaluate.
+            test_dataset:
+                test dataset passed to `model.evaluate()`. Defaults to None.
+            shape: output shape. Defaults to None.
+        """
+        if test_dataset:
+            if shape is None:
+                shape = get_output_shape(model, test_dataset)[1:]
+            test_dataset = test_dataset\
+                .map(layers.crop_labels_to_shape(shape))\
+                .batch(1)
+            model.evaluate(test_dataset)

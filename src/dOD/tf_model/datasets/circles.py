@@ -15,7 +15,7 @@ def _create_img_mask(nx: int, ny: int,
     img = np.ones((nx, ny, 1))
     mask = np.zeros((nx, ny), dtype=np.bool)
 
-    for _ in ncircles:
+    for _ in range(ncircles):
         a = np.random.randint(border, nx - border)
         b = np.random.randint(border, ny - border)
         r = np.random.randint(*radius_range)
@@ -46,11 +46,11 @@ def _create_samples(N: int, nx: int, ny: int,
     return imgs, labels
 
 
-def load_data(N: int,
+def load_data(N: int, nx: int, ny: int,
               splits: Tuple[float] = (0.7, 0.2, 0.1),
               **kwargs) -> List[tf.data.Dataset]:
     return [
         tf.data.Dataset.from_tensor_slices(
-            _create_samples(int(N * split), **kwargs)
+            _create_samples(int(N * split), nx, ny, **kwargs)
         ) for split in splits
     ]
