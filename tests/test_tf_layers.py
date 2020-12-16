@@ -28,8 +28,7 @@ class TestSequentialConv2DLayer:
         assert reconstructed.drop_rate == seq_conv2d.drop_rate
         assert reconstructed.norm_type == seq_conv2d.norm_type
 
-        assert len(reconstructed.layers_conv2d) == \
-            len(seq_conv2d.layers_conv2d)
+        assert len(reconstructed.layers) == len(seq_conv2d.layers)
 
 
 class TestConv2DTransposeLayer:
@@ -54,6 +53,8 @@ class TestConv2DTransposeLayer:
         assert reconstructed.activation == conv2d_transpose.activation
         assert reconstructed.drop_rate == conv2d_transpose.drop_rate
         assert reconstructed.norm_type == conv2d_transpose.norm_type
+
+        assert len(reconstructed.layers) == len(conv2d_transpose.layers)
 
 
 class TestCropConcatLayer:
