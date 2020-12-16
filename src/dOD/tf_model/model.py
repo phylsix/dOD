@@ -76,7 +76,6 @@ class UNet:
             }
 
             if idepth == 0:
-                conv_params['input_shape'] = self.ishape
                 conv_params['norm_type'] = None
 
             x = layers.SequentialConv2DLayer(**conv_params)(x)

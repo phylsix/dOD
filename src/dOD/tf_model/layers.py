@@ -88,14 +88,11 @@ class SequentialConv2DLayer(Layer):
         self.sequence = tf.keras.Sequential()
         self.kernel_shape = kernel_shape
 
-        if "input_shape" in kwargs:
-            self.ishape = kwargs["input_shape"]
-
         self.kernel_initializer = get_kernel_initializer(
             filters=kernel_shape[2], kernel_size=kernel_shape[:2])
 
-        if self.ishape is not None:
-            self.sequence.add(tf.keras.layers.Input(shape=self.ishape))
+        # if self.ishape is not None:
+        #     self.sequence.add(tf.keras.layers.Input(shape=self.ishape))
 
         for _ in range(self.nlayer):
             self.sequence.add(
