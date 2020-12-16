@@ -19,7 +19,9 @@ def build_logpath(root: Optional[str] = 'unet') -> str:
 
 def get_output_shape(model: Model,
                      train_dataset: tf.data.Dataset) -> tf.Tensor:
-    return model.predict(train_dataset.take(1).batch(batch_size=1)).shape
+    X, y = next(train_dataset.take(1).as_numpy_iterator())
+    X_ = tf.zeros([1, *X.shape])
+    return model(X_).shape[1:]
 
 
 class Trainer:
@@ -104,7 +106,7 @@ class Trainer:
             History: history of training.
         """
 
-        out_shape = get_output_shape(model, train_dataset)[1:]
+        out_shape = get_output_shape(model, train_dataset)
 
         train_dataset = train_dataset.map(
             layers.crop_labels_to_shape(out_shape)).batch(batch_size)
@@ -144,7 +146,7 @@ class Trainer:
         """
         if test_dataset:
             if shape is None:
-                shape = get_output_shape(model, test_dataset)[1:]
+                shape = get_output_shape(model, test_dataset)
             test_dataset = test_dataset\
                 .map(layers.crop_labels_to_shape(shape))\
                 .batch(1)

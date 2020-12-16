@@ -62,7 +62,7 @@ class SequentialConv2DLayer(Layer):
         activation: activation function.
         drop_rate: drop_rate arg for Conv2D.
         norm_type: normalization layer, 'batchnorm' or 'instancenorm'.
-        layers_conv2d: Conv2D layers.
+        sequence: list of layers.
         kernel_shape: convolution kernel shape.
         kernel_initializer: kernel_initializer arg for Conv2D.
     """
@@ -85,7 +85,7 @@ class SequentialConv2DLayer(Layer):
         self.activation = activation
         self.drop_rate = drop_rate
         self.norm_type = norm_type
-        self.layers_conv2d = []
+        self.sequence = tf.keras.Sequential()
         self.kernel_shape = kernel_shape
 
         if "input_shape" in kwargs:
@@ -94,65 +94,47 @@ class SequentialConv2DLayer(Layer):
         self.kernel_initializer = get_kernel_initializer(
             filters=kernel_shape[2], kernel_size=kernel_shape[:2])
 
-        # First layer which contains input
-        if self.ishape is None:
-            self.layers_conv2d.append(
+        if self.ishape is not None:
+            self.sequence.add(tf.keras.layers.Input(shape=self.ishape))
+
+        for _ in range(self.nlayer):
+            self.sequence.add(
                 tf.keras.layers.Conv2D(
                     filters=kernel_shape[2],
                     kernel_size=kernel_shape[:2],
                     strides=strides,
                     padding=padding,
-                    kernel_initializer=self.kernel_initializer)
-            )
-        else:
-            self.layers_conv2d.append(
-                tf.keras.layers.Conv2D(
-                    filters=kernel_shape[2],
-                    kernel_size=kernel_shape[:2],
-                    strides=strides,
-                    padding=padding,
-                    input_shape=self.ishape,
                     kernel_initializer=self.kernel_initializer)
             )
 
-        # The rest
-        for _ in range(1, self.nlayer):
-            self.layers_conv2d.append(
-                tf.keras.layers.Conv2D(
-                    filters=kernel_shape[2],
-                    kernel_size=kernel_shape[:2],
-                    strides=strides,
-                    padding=padding,
-                    kernel_initializer=self.kernel_initializer)
-            )
+            if self.norm_type:
+                if isinstance(self.norm_type, str):
+                    if self.norm_type.lower() == 'batchnorm':
+                        self.sequence.add(tf.keras.layers.BatchNormalization())
+                    if self.norm_type.lower() == 'instancenorm':
+                        self.sequence.add(InstanceNormalization())
+                elif isinstance(self.norm_type, Callable):
+                    self.sequence.add(self.norm_type)
+
+            if self.drop_rate > 0.:
+                self.sequence.add(tf.keras.layers.Dropout(self.drop_rate))
+
+            if self.activation:
+                if isinstance(self.activation, str):
+                    self.sequence.add(
+                        tf.keras.layers.Activation(self.activation))
+                elif isinstance(self.activation, Callable):
+                    self.sequence.add(self.activation)
+
+    @property
+    def layers(self):
+        return self.sequence.layers
 
     def call(self,
              inputs: tf.Tensor,
              training: bool = False,
              **kwargs) -> tf.Tensor:
-        x = inputs
-
-        for i in range(self.nlayer):
-            x = self.layers_conv2d[i](x)
-
-            if self.norm_type:
-                if isinstance(self.norm_type, str):
-                    if self.norm_type.lower() == 'batchnorm':
-                        x = tf.keras.layers.BatchNormalization()(x)
-                    if self.norm_type.lower() == 'instancenorm':
-                        x = InstanceNormalization()(x)
-                elif isinstance(self.norm_type, Callable):
-                    x = self.norm_type(x)
-
-            if training and self.drop_rate > 0.:
-                x = tf.keras.layers.Dropout(self.drop_rate)(x)
-
-            if self.activation:
-                if isinstance(self.activation, str):
-                    x = tf.keras.layers.Activation(self.activation)(x)
-                elif isinstance(self.activation, Callable):
-                    x = self.activation(x)
-
+        x = self.sequence(inputs)
         return x
 
     def get_config(self) -> Dict[str, Any]:
@@ -180,7 +162,7 @@ class Conv2DTransposeLayer(Layer):
         drop_rate: dropout rate.
         norm_type: normalization layer, 'batchnorm' or 'instancenorm'.
         kernel_initializer: kernel_initializer arg for Conv2DTranspose.
-        layer: holder of Conv2DTranspose.
+        sequence: list of layers.
     """
 
     def __init__(self,
@@ -199,40 +181,48 @@ class Conv2DTransposeLayer(Layer):
         self.activation = activation
         self.drop_rate = drop_rate
         self.norm_type = norm_type
+        self.sequence = tf.keras.Sequential()
 
         self.kernel_initializer = get_kernel_initializer(
             filters=kernel_shape[2], kernel_size=kernel_shape[:2])
 
-        self.layer = tf.keras.layers.Conv2DTranspose(
+        self.sequence.add(tf.keras.layers.Conv2DTranspose(
             filters=kernel_shape[2],
             kernel_size=kernel_shape[:2],
             strides=strides,
             padding=padding,
             kernel_initializer=self.kernel_initializer,
             use_bias=False)
-
-    def call(self, inputs: tf.Tensor, **kwargs) -> tf.Tensor:
-        x = inputs
-        x = self.layer(x)
+        )
 
         if self.norm_type:
             if isinstance(self.norm_type, str):
                 if self.norm_type.lower() == 'batchnorm':
-                    x = tf.keras.layers.BatchNormalization()(x)
+                    self.sequence.add(tf.keras.layers.BatchNormalization())
                 if self.norm_type.lower() == 'instancenorm':
-                    x = InstanceNormalization()(x)
+                    self.sequence.add(InstanceNormalization())
             elif isinstance(self.norm_type, Callable):
-                x = self.norm_type(x)
+                self.sequence.add(self.norm_type)
 
-        if self.drop_rate > 0:
-            x = tf.keras.layers.Dropout(self.drop_rate)(x)
+        if self.drop_rate > 0.:
+            self.sequence.add(tf.keras.layers.Dropout(self.drop_rate))
 
         if self.activation:
             if isinstance(self.activation, str):
-                x = tf.keras.layers.Activation(self.activation)(x)
+                self.sequence.add(
+                    tf.keras.layers.Activation(self.activation))
             elif isinstance(self.activation, Callable):
-                x = self.activation(x)
+                self.sequence.add(self.activation)
 
+    @property
+    def layers(self):
+        return self.sequence.layers
+
+    def call(self,
+             inputs: tf.Tensor,
+             training: bool = False,
+             **kwargs) -> tf.Tensor:
+        x = self.sequence(inputs)
         return x
 
     def get_config(self) -> Dict[str, Any]:
