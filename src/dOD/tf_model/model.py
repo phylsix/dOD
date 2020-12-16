@@ -108,11 +108,15 @@ class UNet:
                 drop_rate=self.drop_rate,
                 norm_type=self.norm_type)(x)
 
-        x = tf.keras.layers.Conv2D(filters=self.num_classes,
-                                   kernel_size=(1, 1),
-                                   padding=self.padding,
-                                   activation=self.activation)(x)
+        x = tf.keras.layers.Conv2D(
+            filters=self.num_classes,
+            kernel_size=(1, 1),
+            strides=1,
+            kernel_initializer=layers.get_kernel_initializer(
+                self.root_feature, self.kshape),
+            padding=self.padding)(x)
 
+        x = tf.keras.layers.Activation(self.activation)(x)
         outputs = tf.keras.layers.Activation("softmax", name="outputs")(x)
 
         self.net = tf.keras.Model(inputs, outputs, name="UNet")
