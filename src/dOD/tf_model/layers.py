@@ -64,7 +64,6 @@ class SequentialConv2DLayer(Layer):
         norm_type: normalization layer, 'batchnorm' or 'instancenorm'.
         layers: list of layers.
         kernel_shape: convolution kernel shape.
-        kernel_initializer: kernel_initializer arg for Conv2D.
     """
 
     def __init__(self,
@@ -88,9 +87,6 @@ class SequentialConv2DLayer(Layer):
         self.layers = []
         self.kernel_shape = kernel_shape
 
-        self.kernel_initializer = get_kernel_initializer(
-            filters=kernel_shape[2], kernel_size=kernel_shape[:2])
-
         for _ in range(self.nlayer):
             self.layers.append(
                 tf.keras.layers.Conv2D(
@@ -98,7 +94,11 @@ class SequentialConv2DLayer(Layer):
                     kernel_size=kernel_shape[:2],
                     strides=strides,
                     padding=padding,
-                    kernel_initializer=self.kernel_initializer)
+                    kernel_initializer=get_kernel_initializer(
+                        filters=kernel_shape[2],
+                        kernel_size=kernel_shape[:2]
+                    )
+                )
             )
 
             if self.norm_type:
@@ -158,7 +158,6 @@ class Conv2DTransposeLayer(Layer):
         activation: activation arg for Conv2DTranspose.
         drop_rate: dropout rate.
         norm_type: normalization layer, 'batchnorm' or 'instancenorm'.
-        kernel_initializer: kernel_initializer arg for Conv2DTranspose.
         layers: list of layers.
     """
 
@@ -180,16 +179,17 @@ class Conv2DTransposeLayer(Layer):
         self.norm_type = norm_type
         self.layers = []
 
-        self.kernel_initializer = get_kernel_initializer(
-            filters=kernel_shape[2], kernel_size=kernel_shape[:2])
-
-        self.layers.append(tf.keras.layers.Conv2DTranspose(
-            filters=kernel_shape[2],
-            kernel_size=kernel_shape[:2],
-            strides=strides,
-            padding=padding,
-            kernel_initializer=self.kernel_initializer,
-            use_bias=False)
+        self.layers.append(
+            tf.keras.layers.Conv2DTranspose(
+                filters=kernel_shape[2],
+                kernel_size=kernel_shape[:2],
+                strides=strides,
+                padding=padding,
+                kernel_initializer=get_kernel_initializer(
+                    filters=kernel_shape[2],
+                    kernel_size=kernel_shape[:2]
+                )
+            )
         )
 
         if self.norm_type:
