@@ -1,0 +1,29 @@
+dOD.tf\_model.datasets package
+==============================
+
+Submodules
+----------
+
+dOD.tf\_model.datasets.circles module
+-------------------------------------
+
+.. automodule:: dOD.tf_model.datasets.circles
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+dOD.tf\_model.datasets.oxford\_iiit module
+------------------------------------------
+
+.. automodule:: dOD.tf_model.datasets.oxford_iiit
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: dOD.tf_model.datasets
+   :members:
+   :undoc-members:
+   :show-inheritance:

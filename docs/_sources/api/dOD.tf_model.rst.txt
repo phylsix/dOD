@@ -1,6 +1,14 @@
 dOD.tf\_model package
 =====================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   dOD.tf_model.datasets
+
 Submodules
 ----------
 

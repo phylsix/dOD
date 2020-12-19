@@ -194,6 +194,9 @@
                 
   <div class="section" id="oxford-iiit-pet-tensorflow">
 <h1>Oxford-iiit-pet (tensorflow)<a class="headerlink" href="#oxford-iiit-pet-tensorflow" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p>!pip install git+https://github.com/phylsix/dOD.git</p>
+</div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -222,13 +225,14 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modelMaker</span> <span class="o">=</span> <span class="n">UNet</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">oxford_iiit</span><span class="o">.</span><span class="n">CHANNELS</span><span class="p">),</span> <span class="n">kernel_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">nlayer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-                               <span class="n">root_feature</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span>
-                               <span class="n">drop_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">oxford_iiit</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">modelMaker</span> <span class="o">=</span> <span class="n">UNet</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">oxford_iiit</span><span class="o">.</span><span class="n">CHANNELS</span><span class="p">),</span>
+                  <span class="n">kernel_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">nlayer</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                  <span class="n">root_feature</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">norm_type</span><span class="o">=</span><span class="s1">&#39;instancenorm&#39;</span><span class="p">,</span>
+                  <span class="n">drop_rate</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">oxford_iiit</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">)</span>
 <span class="n">modelMaker</span><span class="o">.</span><span class="n">build_net</span><span class="p">()</span>
 <span class="n">modelMaker</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
                    <span class="n">loss</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">SparseCategoricalCrossentropy</span><span class="p">(),</span>
-                   <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sparse_categorical_crossentropy&#39;</span><span class="p">,</span> <span class="s1">&#39;sparse_categorical_accuracy&#39;</span><span class="p">])</span>
+                   <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sparse_categorical_accuracy&#39;</span><span class="p">])</span>
 <span class="n">modelMaker</span><span class="o">.</span><span class="n">describle</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -236,31 +240,31 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-------- input shape: (None, 128, 128, 3)
     &gt; layer 0 shape: (None, 128, 128, 64)
-    &gt; layer 1 shape: (None, 128, 128, 64)
+    &gt; layer 2 shape: (None, 128, 128, 64)
     downstream layer 1 shape: (None, 128, 128, 64)
         &gt; layer 0 shape: (None, 64, 64, 128)
-        &gt; layer 1 shape: (None, 64, 64, 128)
+        &gt; layer 3 shape: (None, 64, 64, 128)
         downstream layer 2 shape: (None, 64, 64, 128)
             &gt; layer 0 shape: (None, 32, 32, 256)
-            &gt; layer 1 shape: (None, 32, 32, 256)
+            &gt; layer 3 shape: (None, 32, 32, 256)
             downstream layer 3 shape: (None, 32, 32, 256)
                 &gt; layer 0 shape: (None, 16, 16, 512)
-                &gt; layer 1 shape: (None, 16, 16, 512)
+                &gt; layer 3 shape: (None, 16, 16, 512)
                 downstream layer 4 shape: (None, 16, 16, 512)
                     &gt; layer 0 shape: (None, 8, 8, 1024)
-                    &gt; layer 1 shape: (None, 8, 8, 1024)
+                    &gt; layer 3 shape: (None, 8, 8, 1024)
                     bottom layer 5 shape: (None, 8, 8, 1024)
                 &gt; layer 0 shape: (None, 16, 16, 512)
-                &gt; layer 1 shape: (None, 16, 16, 512)
+                &gt; layer 3 shape: (None, 16, 16, 512)
                 upstream layer 4 shape: (None, 16, 16, 512)
             &gt; layer 0 shape: (None, 32, 32, 256)
-            &gt; layer 1 shape: (None, 32, 32, 256)
+            &gt; layer 3 shape: (None, 32, 32, 256)
             upstream layer 3 shape: (None, 32, 32, 256)
         &gt; layer 0 shape: (None, 64, 64, 128)
-        &gt; layer 1 shape: (None, 64, 64, 128)
+        &gt; layer 3 shape: (None, 64, 64, 128)
         upstream layer 2 shape: (None, 64, 64, 128)
     &gt; layer 0 shape: (None, 128, 128, 64)
-    &gt; layer 1 shape: (None, 128, 128, 64)
+    &gt; layer 3 shape: (None, 128, 128, 64)
     upstream layer 1 shape: (None, 128, 128, 64)
 -------- output shape: (None, 128, 128, 3)
 </pre></div>
@@ -269,111 +273,131 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">logbase</span><span class="o">=</span><span class="s1">&#39;./logs/oxford&#39;</span><span class="p">)</span>
-<span class="n">hisotry</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">modelMaker</span><span class="o">.</span><span class="n">net</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_dataset</span><span class="o">=</span><span class="n">test_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">T</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">logbase</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">history</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">modelMaker</span><span class="o">.</span><span class="n">net</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span> <span class="n">validation_dataset</span><span class="o">=</span><span class="n">test_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/25
-  2/115 [..............................] - ETA: 1:48 - loss: 0.3751 - sparse_categorical_crossentropy: 0.3751 - sparse_categorical_accuracy: 0.8553WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.4798s vs `on_train_batch_end` time: 0.7489s). Check your callbacks.
-WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.4798s vs `on_train_batch_end` time: 0.7489s). Check your callbacks.
-115/115 [==============================] - 171s 1s/step - loss: 0.3674 - sparse_categorical_crossentropy: 0.3674 - sparse_categorical_accuracy: 0.8535 - val_loss: 0.4451 - val_sparse_categorical_crossentropy: 0.4451 - val_sparse_categorical_accuracy: 0.8291
+  2/230 [..............................] - ETA: 42s - loss: 1.1137 - sparse_categorical_accuracy: 0.3619WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.1251s vs `on_train_batch_end` time: 0.2478s). Check your callbacks.
+WARNING:tensorflow:Callbacks method `on_train_batch_end` is slow compared to the batch time (batch time: 0.1251s vs `on_train_batch_end` time: 0.2478s). Check your callbacks.
+230/230 [==============================] - 115s 500ms/step - loss: 0.6245 - sparse_categorical_accuracy: 0.7506 - val_loss: 0.5429 - val_sparse_categorical_accuracy: 0.7868
 Epoch 2/25
-115/115 [==============================] - 171s 1s/step - loss: 0.3613 - sparse_categorical_crossentropy: 0.3613 - sparse_categorical_accuracy: 0.8558 - val_loss: 0.4239 - val_sparse_categorical_crossentropy: 0.4239 - val_sparse_categorical_accuracy: 0.8327
+230/230 [==============================] - 115s 499ms/step - loss: 0.4634 - sparse_categorical_accuracy: 0.8166 - val_loss: 0.4369 - val_sparse_categorical_accuracy: 0.8284
 Epoch 3/25
-115/115 [==============================] - 171s 1s/step - loss: 0.3496 - sparse_categorical_crossentropy: 0.3496 - sparse_categorical_accuracy: 0.8612 - val_loss: 0.4211 - val_sparse_categorical_crossentropy: 0.4211 - val_sparse_categorical_accuracy: 0.8348
+230/230 [==============================] - 116s 504ms/step - loss: 0.4013 - sparse_categorical_accuracy: 0.8406 - val_loss: 0.3966 - val_sparse_categorical_accuracy: 0.8390
 Epoch 4/25
-115/115 [==============================] - 170s 1s/step - loss: 0.3540 - sparse_categorical_crossentropy: 0.3540 - sparse_categorical_accuracy: 0.8587 - val_loss: 0.4380 - val_sparse_categorical_crossentropy: 0.4380 - val_sparse_categorical_accuracy: 0.8270
+230/230 [==============================] - 119s 517ms/step - loss: 0.3593 - sparse_categorical_accuracy: 0.8565 - val_loss: 0.3665 - val_sparse_categorical_accuracy: 0.8549
 Epoch 5/25
-115/115 [==============================] - 169s 1s/step - loss: 0.3473 - sparse_categorical_crossentropy: 0.3473 - sparse_categorical_accuracy: 0.8608 - val_loss: 0.4271 - val_sparse_categorical_crossentropy: 0.4271 - val_sparse_categorical_accuracy: 0.8354
+230/230 [==============================] - 119s 515ms/step - loss: 0.3330 - sparse_categorical_accuracy: 0.8662 - val_loss: 0.3483 - val_sparse_categorical_accuracy: 0.8642
 Epoch 6/25
-115/115 [==============================] - 170s 1s/step - loss: 0.3534 - sparse_categorical_crossentropy: 0.3534 - sparse_categorical_accuracy: 0.8585 - val_loss: 0.4561 - val_sparse_categorical_crossentropy: 0.4561 - val_sparse_categorical_accuracy: 0.8241
+230/230 [==============================] - 118s 513ms/step - loss: 0.3138 - sparse_categorical_accuracy: 0.8724 - val_loss: 0.3448 - val_sparse_categorical_accuracy: 0.8626
 Epoch 7/25
-115/115 [==============================] - 170s 1s/step - loss: 0.3520 - sparse_categorical_crossentropy: 0.3520 - sparse_categorical_accuracy: 0.8593 - val_loss: 0.4502 - val_sparse_categorical_crossentropy: 0.4502 - val_sparse_categorical_accuracy: 0.8249
+230/230 [==============================] - 116s 503ms/step - loss: 0.2853 - sparse_categorical_accuracy: 0.8837 - val_loss: 0.3264 - val_sparse_categorical_accuracy: 0.8723
 Epoch 8/25
-115/115 [==============================] - 171s 1s/step - loss: 0.3412 - sparse_categorical_crossentropy: 0.3412 - sparse_categorical_accuracy: 0.8629 - val_loss: 0.4120 - val_sparse_categorical_crossentropy: 0.4120 - val_sparse_categorical_accuracy: 0.8384
+230/230 [==============================] - 118s 514ms/step - loss: 0.2644 - sparse_categorical_accuracy: 0.8915 - val_loss: 0.3184 - val_sparse_categorical_accuracy: 0.8763
 Epoch 9/25
-115/115 [==============================] - 169s 1s/step - loss: 0.3369 - sparse_categorical_crossentropy: 0.3369 - sparse_categorical_accuracy: 0.8648 - val_loss: 0.4410 - val_sparse_categorical_crossentropy: 0.4410 - val_sparse_categorical_accuracy: 0.8306
+230/230 [==============================] - 119s 516ms/step - loss: 0.2569 - sparse_categorical_accuracy: 0.8939 - val_loss: 0.3230 - val_sparse_categorical_accuracy: 0.8765
 Epoch 10/25
-115/115 [==============================] - 145s 1s/step - loss: 0.3570 - sparse_categorical_crossentropy: 0.3570 - sparse_categorical_accuracy: 0.8574 - val_loss: 0.4206 - val_sparse_categorical_crossentropy: 0.4206 - val_sparse_categorical_accuracy: 0.8318
+230/230 [==============================] - 117s 510ms/step - loss: 0.2420 - sparse_categorical_accuracy: 0.8995 - val_loss: 0.3154 - val_sparse_categorical_accuracy: 0.8768
 Epoch 11/25
-115/115 [==============================] - 107s 928ms/step - loss: 0.3369 - sparse_categorical_crossentropy: 0.3369 - sparse_categorical_accuracy: 0.8647 - val_loss: 0.3942 - val_sparse_categorical_crossentropy: 0.3942 - val_sparse_categorical_accuracy: 0.8477
+230/230 [==============================] - 113s 490ms/step - loss: 0.2343 - sparse_categorical_accuracy: 0.9022 - val_loss: 0.2908 - val_sparse_categorical_accuracy: 0.8854
 Epoch 12/25
-115/115 [==============================] - 109s 947ms/step - loss: 0.3456 - sparse_categorical_crossentropy: 0.3456 - sparse_categorical_accuracy: 0.8618 - val_loss: 0.4478 - val_sparse_categorical_crossentropy: 0.4478 - val_sparse_categorical_accuracy: 0.8246
+230/230 [==============================] - 116s 506ms/step - loss: 0.2153 - sparse_categorical_accuracy: 0.9093 - val_loss: 0.3055 - val_sparse_categorical_accuracy: 0.8817
 Epoch 13/25
-115/115 [==============================] - 108s 937ms/step - loss: 0.3378 - sparse_categorical_crossentropy: 0.3378 - sparse_categorical_accuracy: 0.8645 - val_loss: 0.4297 - val_sparse_categorical_crossentropy: 0.4297 - val_sparse_categorical_accuracy: 0.8251
+230/230 [==============================] - 121s 526ms/step - loss: 0.2091 - sparse_categorical_accuracy: 0.9110 - val_loss: 0.3159 - val_sparse_categorical_accuracy: 0.8832
 Epoch 14/25
-115/115 [==============================] - 109s 951ms/step - loss: 0.3365 - sparse_categorical_crossentropy: 0.3365 - sparse_categorical_accuracy: 0.8646 - val_loss: 0.4275 - val_sparse_categorical_crossentropy: 0.4275 - val_sparse_categorical_accuracy: 0.8352
+230/230 [==============================] - 119s 518ms/step - loss: 0.2154 - sparse_categorical_accuracy: 0.9088 - val_loss: 0.3103 - val_sparse_categorical_accuracy: 0.8829
 Epoch 15/25
-115/115 [==============================] - 108s 943ms/step - loss: 0.3357 - sparse_categorical_crossentropy: 0.3357 - sparse_categorical_accuracy: 0.8653 - val_loss: 0.4199 - val_sparse_categorical_crossentropy: 0.4199 - val_sparse_categorical_accuracy: 0.8335
+230/230 [==============================] - 121s 527ms/step - loss: 0.2010 - sparse_categorical_accuracy: 0.9141 - val_loss: 0.3879 - val_sparse_categorical_accuracy: 0.8704
 Epoch 16/25
-115/115 [==============================] - 108s 938ms/step - loss: 0.3285 - sparse_categorical_crossentropy: 0.3285 - sparse_categorical_accuracy: 0.8680 - val_loss: 0.4235 - val_sparse_categorical_crossentropy: 0.4235 - val_sparse_categorical_accuracy: 0.8277
+230/230 [==============================] - 121s 527ms/step - loss: 0.1994 - sparse_categorical_accuracy: 0.9145 - val_loss: 0.3093 - val_sparse_categorical_accuracy: 0.8852
 Epoch 17/25
-115/115 [==============================] - 107s 931ms/step - loss: 0.3288 - sparse_categorical_crossentropy: 0.3288 - sparse_categorical_accuracy: 0.8682 - val_loss: 0.4258 - val_sparse_categorical_crossentropy: 0.4258 - val_sparse_categorical_accuracy: 0.8330
+230/230 [==============================] - 119s 517ms/step - loss: 0.1814 - sparse_categorical_accuracy: 0.9210 - val_loss: 0.2858 - val_sparse_categorical_accuracy: 0.8945
 Epoch 18/25
-115/115 [==============================] - 107s 929ms/step - loss: 0.3304 - sparse_categorical_crossentropy: 0.3304 - sparse_categorical_accuracy: 0.8675 - val_loss: 0.3958 - val_sparse_categorical_crossentropy: 0.3958 - val_sparse_categorical_accuracy: 0.8453
+230/230 [==============================] - 120s 521ms/step - loss: 0.1872 - sparse_categorical_accuracy: 0.9188 - val_loss: 0.3232 - val_sparse_categorical_accuracy: 0.8829
 Epoch 19/25
-115/115 [==============================] - 109s 948ms/step - loss: 0.3303 - sparse_categorical_crossentropy: 0.3303 - sparse_categorical_accuracy: 0.8673 - val_loss: 0.4175 - val_sparse_categorical_crossentropy: 0.4175 - val_sparse_categorical_accuracy: 0.8441
+230/230 [==============================] - 121s 527ms/step - loss: 0.1847 - sparse_categorical_accuracy: 0.9198 - val_loss: 0.3009 - val_sparse_categorical_accuracy: 0.8892
 Epoch 20/25
-115/115 [==============================] - 109s 950ms/step - loss: 0.3259 - sparse_categorical_crossentropy: 0.3259 - sparse_categorical_accuracy: 0.8691 - val_loss: 0.4064 - val_sparse_categorical_crossentropy: 0.4064 - val_sparse_categorical_accuracy: 0.8400
+230/230 [==============================] - 120s 523ms/step - loss: 0.1795 - sparse_categorical_accuracy: 0.9217 - val_loss: 0.3006 - val_sparse_categorical_accuracy: 0.8895
 Epoch 21/25
-115/115 [==============================] - 109s 949ms/step - loss: 0.3260 - sparse_categorical_crossentropy: 0.3260 - sparse_categorical_accuracy: 0.8691 - val_loss: 0.3867 - val_sparse_categorical_crossentropy: 0.3867 - val_sparse_categorical_accuracy: 0.8516
+230/230 [==============================] - 118s 514ms/step - loss: 0.1658 - sparse_categorical_accuracy: 0.9266 - val_loss: 0.2840 - val_sparse_categorical_accuracy: 0.8976
 Epoch 22/25
-115/115 [==============================] - 110s 958ms/step - loss: 0.3186 - sparse_categorical_crossentropy: 0.3186 - sparse_categorical_accuracy: 0.8717 - val_loss: 0.3699 - val_sparse_categorical_crossentropy: 0.3699 - val_sparse_categorical_accuracy: 0.8527
+230/230 [==============================] - 122s 531ms/step - loss: 0.1520 - sparse_categorical_accuracy: 0.9317 - val_loss: 0.2921 - val_sparse_categorical_accuracy: 0.8972
 Epoch 23/25
-115/115 [==============================] - 108s 941ms/step - loss: 0.3217 - sparse_categorical_crossentropy: 0.3217 - sparse_categorical_accuracy: 0.8704 - val_loss: 0.4075 - val_sparse_categorical_crossentropy: 0.4075 - val_sparse_categorical_accuracy: 0.8380
+230/230 [==============================] - 123s 533ms/step - loss: 0.1481 - sparse_categorical_accuracy: 0.9331 - val_loss: 0.3117 - val_sparse_categorical_accuracy: 0.8950
 Epoch 24/25
-115/115 [==============================] - 107s 931ms/step - loss: 0.3273 - sparse_categorical_crossentropy: 0.3273 - sparse_categorical_accuracy: 0.8684 - val_loss: 0.3805 - val_sparse_categorical_crossentropy: 0.3805 - val_sparse_categorical_accuracy: 0.8504
+230/230 [==============================] - 121s 525ms/step - loss: 0.1475 - sparse_categorical_accuracy: 0.9332 - val_loss: 0.2966 - val_sparse_categorical_accuracy: 0.8970
 Epoch 25/25
-115/115 [==============================] - 107s 934ms/step - loss: 0.3232 - sparse_categorical_crossentropy: 0.3232 - sparse_categorical_accuracy: 0.8692 - val_loss: 0.3890 - val_sparse_categorical_crossentropy: 0.3890 - val_sparse_categorical_accuracy: 0.8467
+230/230 [==============================] - 119s 518ms/step - loss: 0.1420 - sparse_categorical_accuracy: 0.9353 - val_loss: 0.3256 - val_sparse_categorical_accuracy: 0.8933
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">hisotry</span>
-<span class="n">train_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
-<span class="n">val_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">show_history</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="n">EPOCHS</span><span class="o">=</span><span class="mi">25</span><span class="p">):</span>
+  <span class="n">train_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;loss&#39;</span><span class="p">]</span>
+  <span class="n">val_loss</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+  <span class="n">train_acc</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;sparse_categorical_accuracy&#39;</span><span class="p">]</span>
+  <span class="n">val_acc</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s1">&#39;val_sparse_categorical_accuracy&#39;</span><span class="p">]</span>
 
-<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">25</span>
+  <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">train_loss</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training loss&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">val_loss</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation loss&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Training and validation loss&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">train_loss</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training loss&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">val_loss</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation loss&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Training and validation loss&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">train_acc</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;training accuracy&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">),</span> <span class="n">val_acc</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;validation accuracy&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Training and validation accuracy&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+  <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/tf_oxford-iiit_5_0.svg" src="_images/tf_oxford-iiit_5_0.svg" /></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                         <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_ds</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">1</span><span class="p">)):</span>
-    <span class="n">prediction</span> <span class="o">=</span> <span class="n">modelMaker</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>    
-    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="p">)</span>
-<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
-        <span class="n">x</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
-        <span class="n">x</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">]):</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_history</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/tf_oxford-iiit_6_0.svg" src="_images/tf_oxford-iiit_6_0.svg" /></div>
+<img alt="_images/tf_oxford-iiit_7_0.svg" src="_images/tf_oxford-iiit_7_0.svg" /></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">show_result</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">N</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">9</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;wspace&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s1">&#39;hspace&#39;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">})</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_ds</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">N</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="n">prediction</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">img</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>    
+        <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">label</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">)</span>
+        <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">:</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;prediction&#39;</span><span class="p">]):</span>
+        <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_result</span><span class="p">(</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">modelMaker</span><span class="o">.</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/tf_oxford-iiit_9_0.svg" src="_images/tf_oxford-iiit_9_0.svg" /></div>
 </div>
 </div>
 

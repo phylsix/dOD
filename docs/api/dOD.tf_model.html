@@ -36,6 +36,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dOD.tf_model.datasets package" href="dOD.tf_model.datasets.html" />
     <link rel="prev" title="dOD package" href="dOD.html" /> 
 </head>
 
@@ -171,6 +172,20 @@
             
   <div class="section" id="dod-tf-model-package">
 <h1>dOD.tf_model package<a class="headerlink" href="#dod-tf-model-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dOD.tf_model.datasets.html">dOD.tf_model.datasets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dOD.tf_model.datasets.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dOD.tf_model.datasets.html#module-dOD.tf_model.datasets.circles">dOD.tf_model.datasets.circles module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dOD.tf_model.datasets.html#dod-tf-model-datasets-oxford-iiit-module">dOD.tf_model.datasets.oxford_iiit module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dOD.tf_model.datasets.html#module-dOD.tf_model.datasets">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
@@ -197,6 +212,8 @@
 <em class="property">class </em><code class="sig-prename descclassname">dOD.tf_model.layers.</code><code class="sig-name descname">Conv2DTransposeLayer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dOD/tf_model/layers.html#Conv2DTransposeLayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.keras.engine.base_layer.Layer</span></code></p>
 <p>Encapsulate Conv2DTranspose operation.</p>
+<p>Conv2DTranspose =&gt; Normalization =&gt; Dropout =&gt; Activation
+Default:              batchNorm        0.5        relu</p>
 <dl class="py attribute">
 <dt id="dOD.tf_model.layers.Conv2DTransposeLayer.kernel_shape">
 <code class="sig-name descname">kernel_shape</code><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.kernel_shape" title="Permalink to this definition">¶</a></dt>
@@ -222,20 +239,26 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="dOD.tf_model.layers.Conv2DTransposeLayer.kernel_initializer">
-<code class="sig-name descname">kernel_initializer</code><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.kernel_initializer" title="Permalink to this definition">¶</a></dt>
-<dd><p>kernel_initializer arg for Conv2DTranspose.</p>
+<dt id="dOD.tf_model.layers.Conv2DTransposeLayer.drop_rate">
+<code class="sig-name descname">drop_rate</code><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.drop_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>dropout rate.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="dOD.tf_model.layers.Conv2DTransposeLayer.layer">
-<code class="sig-name descname">layer</code><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.layer" title="Permalink to this definition">¶</a></dt>
-<dd><p>holder of Conv2DTranspose.</p>
+<dt id="dOD.tf_model.layers.Conv2DTransposeLayer.norm_type">
+<code class="sig-name descname">norm_type</code><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.norm_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>normalization layer, ‘batchnorm’ or ‘instancenorm’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dOD.tf_model.layers.Conv2DTransposeLayer.layers">
+<code class="sig-name descname">layers</code><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of layers.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="dOD.tf_model.layers.Conv2DTransposeLayer.call">
-<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">tensorflow.python.framework.ops.Tensor</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; tensorflow.python.framework.ops.Tensor<a class="reference internal" href="../_modules/dOD/tf_model/layers.html#Conv2DTransposeLayer.call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.call" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inputs</span><span class="p">:</span> <span class="n">tensorflow.python.framework.ops.Tensor</span></em>, <em class="sig-param"><span class="n">training</span><span class="p">:</span> <span class="n"><a class="reference external" href="https://docs.python.org/3.8/library/functions.html#bool" title="(in Python v3.8)">bool</a></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span> &#x2192; tensorflow.python.framework.ops.Tensor<a class="reference internal" href="../_modules/dOD/tf_model/layers.html#Conv2DTransposeLayer.call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.layers.Conv2DTransposeLayer.call" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is where the layer’s logic lives.</p>
 <p>Note here that <cite>call()</cite> method in <cite>tf.keras</cite> is little bit different
 from <cite>keras</cite> API. In <cite>keras</cite> API, you can pass support masking for
@@ -297,10 +320,73 @@ by <cite>Network</cite> (one layer of abstraction above).</p>
 </dd></dl>
 
 <dl class="py class">
+<dt id="dOD.tf_model.layers.InstanceNormalization">
+<em class="property">class </em><code class="sig-prename descclassname">dOD.tf_model.layers.</code><code class="sig-name descname">InstanceNormalization</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dOD/tf_model/layers.html#InstanceNormalization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.layers.InstanceNormalization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.keras.engine.base_layer.Layer</span></code></p>
+<p>Instance Normalization Layer (<a class="reference external" href="https://arxiv.org/abs/1607.08022">https://arxiv.org/abs/1607.08022</a>)</p>
+<dl class="py attribute">
+<dt id="dOD.tf_model.layers.InstanceNormalization.epsilon">
+<code class="sig-name descname">epsilon</code><a class="headerlink" href="#dOD.tf_model.layers.InstanceNormalization.epsilon" title="Permalink to this definition">¶</a></dt>
+<dd><p>small number</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dOD.tf_model.layers.InstanceNormalization.scale">
+<code class="sig-name descname">scale</code><a class="headerlink" href="#dOD.tf_model.layers.InstanceNormalization.scale" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="dOD.tf_model.layers.InstanceNormalization.offset">
+<code class="sig-name descname">offset</code><a class="headerlink" href="#dOD.tf_model.layers.InstanceNormalization.offset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="dOD.tf_model.layers.InstanceNormalization.build">
+<code class="sig-name descname">build</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">input_shape</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3.8/library/constants.html#None" title="(in Python v3.8)">None</a><a class="reference internal" href="../_modules/dOD/tf_model/layers.html#InstanceNormalization.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.layers.InstanceNormalization.build" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the variables of the layer (optional, for subclass implementers).</p>
+<p>This is a method that implementers of subclasses of <cite>Layer</cite> or <cite>Model</cite>
+can override if they need a state-creation step in-between
+layer instantiation and layer call.</p>
+<p>This is typically used to create the weights of <cite>Layer</cite> subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>input_shape</strong> – Instance of <cite>TensorShape</cite>, or list of instances of
+<cite>TensorShape</cite> if the layer expects a list of inputs
+(one instance per input).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dOD.tf_model.layers.InstanceNormalization.call">
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span><span class="p">:</span> <span class="n">tensorflow.python.framework.ops.Tensor</span></em><span class="sig-paren">)</span> &#x2192; tensorflow.python.framework.ops.Tensor<a class="reference internal" href="../_modules/dOD/tf_model/layers.html#InstanceNormalization.call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.layers.InstanceNormalization.call" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is where the layer’s logic lives.</p>
+<p>Note here that <cite>call()</cite> method in <cite>tf.keras</cite> is little bit different
+from <cite>keras</cite> API. In <cite>keras</cite> API, you can pass support masking for
+layers as additional arguments. Whereas <cite>tf.keras</cite> has <cite>compute_mask()</cite>
+method to support masking.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> – Input tensor, or list/tuple of input tensors.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments. Currently unused.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tensor or list/tuple of tensors.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="dOD.tf_model.layers.SequentialConv2DLayer">
 <em class="property">class </em><code class="sig-prename descclassname">dOD.tf_model.layers.</code><code class="sig-name descname">SequentialConv2DLayer</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dOD/tf_model/layers.html#SequentialConv2DLayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tensorflow.python.keras.engine.base_layer.Layer</span></code></p>
 <p>Encapsulate a sequence of Conv2D operations.</p>
+<p>(Conv2D =&gt; Normalization =&gt; Dropout =&gt; Activation) * nlayer
+Default:     batchNorm       0.5        relu           2</p>
 <dl class="py attribute">
 <dt id="dOD.tf_model.layers.SequentialConv2DLayer.ishape">
 <code class="sig-name descname">ishape</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.ishape" title="Permalink to this definition">¶</a></dt>
@@ -328,7 +414,7 @@ by <cite>Network</cite> (one layer of abstraction above).</p>
 <dl class="py attribute">
 <dt id="dOD.tf_model.layers.SequentialConv2DLayer.activation">
 <code class="sig-name descname">activation</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.activation" title="Permalink to this definition">¶</a></dt>
-<dd><p>activation arg for Conv2D.</p>
+<dd><p>activation function.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -338,27 +424,21 @@ by <cite>Network</cite> (one layer of abstraction above).</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="dOD.tf_model.layers.SequentialConv2DLayer.layers_conv2d">
-<code class="sig-name descname">layers_conv2d</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.layers_conv2d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Conv2D layers.</p>
+<dt id="dOD.tf_model.layers.SequentialConv2DLayer.norm_type">
+<code class="sig-name descname">norm_type</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.norm_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>normalization layer, ‘batchnorm’ or ‘instancenorm’.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="dOD.tf_model.layers.SequentialConv2DLayer.layers_dropout">
-<code class="sig-name descname">layers_dropout</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.layers_dropout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dropout layers.</p>
+<dt id="dOD.tf_model.layers.SequentialConv2DLayer.layers">
+<code class="sig-name descname">layers</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.layers" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of layers.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt id="dOD.tf_model.layers.SequentialConv2DLayer.kernel_shape">
 <code class="sig-name descname">kernel_shape</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.kernel_shape" title="Permalink to this definition">¶</a></dt>
 <dd><p>convolution kernel shape.</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt id="dOD.tf_model.layers.SequentialConv2DLayer.kernel_initializer">
-<code class="sig-name descname">kernel_initializer</code><a class="headerlink" href="#dOD.tf_model.layers.SequentialConv2DLayer.kernel_initializer" title="Permalink to this definition">¶</a></dt>
-<dd><p>kernel_initializer arg for Conv2D.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -427,7 +507,7 @@ by <cite>Network</cite> (one layer of abstraction above).</p>
 <span id="dod-tf-model-model-module"></span><h2>dOD.tf_model.model module<a class="headerlink" href="#module-dOD.tf_model.model" title="Permalink to this headline">¶</a></h2>
 <dl class="py class">
 <dt id="dOD.tf_model.model.UNet">
-<em class="property">class </em><code class="sig-prename descclassname">dOD.tf_model.model.</code><code class="sig-name descname">UNet</code><span class="sig-paren">(</span><em class="sig-param">input_shape: Tuple[int, int, int], kernel_shape: Tuple[int, int], root_feature: int = 64, nlayer: int = 2, depth: int = 3, drop_rate: float = 0.0, padding: str = 'same', activation: Optional[Union[str, Callable]] = &lt;tensorflow.python.keras.layers.advanced_activations.LeakyReLU object&gt;, pool_size: int = 2, num_classes: int = 2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dOD/tf_model/model.html#UNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.model.UNet" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">dOD.tf_model.model.</code><code class="sig-name descname">UNet</code><span class="sig-paren">(</span><em class="sig-param">input_shape: Tuple[int, int, int], kernel_shape: Tuple[int, int], root_feature: int = 64, nlayer: int = 2, depth: int = 3, drop_rate: float = 0.0, padding: str = 'same', activation: Optional[Union[str, Callable]] = &lt;tensorflow.python.keras.layers.advanced_activations.LeakyReLU object&gt;, norm_type: Optional[Union[str, Callable]] = 'instancenorm', pool_size: int = 2, num_classes: int = 2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/dOD/tf_model/model.html#UNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.model.UNet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.8/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Model implementing U-net.</p>
 <dl class="py attribute">
@@ -494,6 +574,12 @@ by <cite>Network</cite> (one layer of abstraction above).</p>
 <dt id="dOD.tf_model.model.UNet.activation">
 <code class="sig-name descname">activation</code><a class="headerlink" href="#dOD.tf_model.model.UNet.activation" title="Permalink to this definition">¶</a></dt>
 <dd><p>activation function to call for convolution.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="dOD.tf_model.model.UNet.norm_type">
+<code class="sig-name descname">norm_type</code><a class="headerlink" href="#dOD.tf_model.model.UNet.norm_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>normalization layer.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -628,16 +714,16 @@ by <cite>Network</cite> (one layer of abstraction above).</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="dOD.tf_model.trainer.Trainer.get_output_shape">
-<code class="sig-name descname">get_output_shape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">tensorflow.python.keras.engine.training.Model</span></em>, <em class="sig-param"><span class="n">train_dataset</span><span class="p">:</span> <span class="n">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></em><span class="sig-paren">)</span> &#x2192; tensorflow.python.framework.ops.Tensor<a class="reference internal" href="../_modules/dOD/tf_model/trainer.html#Trainer.get_output_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.trainer.Trainer.get_output_shape" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 <dl class="py function">
 <dt id="dOD.tf_model.trainer.build_logpath">
 <code class="sig-prename descclassname">dOD.tf_model.trainer.</code><code class="sig-name descname">build_logpath</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#str" title="(in Python v3.8)">str</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'unet'</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="https://docs.python.org/3.8/library/stdtypes.html#str" title="(in Python v3.8)">str</a><a class="reference internal" href="../_modules/dOD/tf_model/trainer.html#build_logpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.trainer.build_logpath" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="dOD.tf_model.trainer.get_output_shape">
+<code class="sig-prename descclassname">dOD.tf_model.trainer.</code><code class="sig-name descname">get_output_shape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">tensorflow.python.keras.engine.training.Model</span></em>, <em class="sig-param"><span class="n">train_dataset</span><span class="p">:</span> <span class="n">tensorflow.python.data.ops.dataset_ops.DatasetV2</span></em><span class="sig-paren">)</span> &#x2192; tensorflow.python.framework.ops.Tensor<a class="reference internal" href="../_modules/dOD/tf_model/trainer.html#get_output_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dOD.tf_model.trainer.get_output_shape" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -653,6 +739,8 @@ by <cite>Network</cite> (one layer of abstraction above).</p>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dOD.tf_model.datasets.html" class="btn btn-neutral float-right" title="dOD.tf_model.datasets package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="dOD.html" class="btn btn-neutral float-left" title="dOD package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -217,19 +217,30 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">circle_model</span> <span class="o">=</span> <span class="n">UNet</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">kernel_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
                     <span class="n">root_feature</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">drop_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">num_classes</span><span class="o">=</span><span class="n">circles</span><span class="o">.</span><span class="n">CLASSES</span><span class="p">)</span>
-<span class="n">circle_model</span><span class="o">.</span><span class="n">build_net</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">circle_model</span><span class="o">.</span><span class="n">build_net</span><span class="p">()</span>
 <span class="n">circle_model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">)</span>
+<span class="n">circle_model</span><span class="o">.</span><span class="n">describle</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>-------- input shape: (None, 200, 200, 1)
- downstream layer 0 shape: (None, 98, 98, 16)
-     downstream layer 1 shape: (None, 47, 47, 32)
-         downstream layer 2 shape: (None, 43, 43, 64)
-     upstream layer 1 shape: (None, 82, 82, 32)
- upstream layer 0 shape: (None, 160, 160, 16)
--------- output shape: (None, 160, 160, 2)
+    &gt; layer 0 shape: (None, 200, 200, 16)
+    &gt; layer 1 shape: (None, 200, 200, 16)
+    downstream layer 1 shape: (None, 200, 200, 16)
+        &gt; layer 0 shape: (None, 100, 100, 32)
+        &gt; layer 1 shape: (None, 100, 100, 32)
+        downstream layer 2 shape: (None, 100, 100, 32)
+            &gt; layer 0 shape: (None, 50, 50, 64)
+            &gt; layer 1 shape: (None, 50, 50, 64)
+            bottom layer 3 shape: (None, 50, 50, 64)
+        &gt; layer 0 shape: (None, 100, 100, 32)
+        &gt; layer 1 shape: (None, 100, 100, 32)
+        upstream layer 2 shape: (None, 100, 100, 32)
+    &gt; layer 0 shape: (None, 200, 200, 16)
+    &gt; layer 1 shape: (None, 200, 200, 16)
+    upstream layer 1 shape: (None, 200, 200, 16)
+-------- output shape: (None, 200, 200, 2)
 </pre></div>
 </div>
 </div>
@@ -251,61 +262,61 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history</span> <span class="o">=</span> <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">circle_model</span><span class="o">.</span><span class="n">net</span><span class="p">,</span> <span class="n">train_ds</span><span class="p">,</span>
-                      <span class="n">validation_dataset</span><span class="o">=</span><span class="n">validation_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+                      <span class="n">validation_dataset</span><span class="o">=</span><span class="n">validation_ds</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.1553 - binary_crossentropy: 0.1553 - binary_accuracy: 0.9648 - val_loss: 0.0502 - val_binary_crossentropy: 0.0502 - val_binary_accuracy: 0.9858
+22/22 [==============================] - 8s 355ms/step - loss: 0.2814 - binary_crossentropy: 0.2814 - binary_accuracy: 0.9609 - val_loss: 0.2200 - val_binary_crossentropy: 0.2200 - val_binary_accuracy: 0.9701
 Epoch 2/25
-140/140 [==============================] - 4s 28ms/step - loss: 0.0585 - binary_crossentropy: 0.0585 - binary_accuracy: 0.9867 - val_loss: 0.0437 - val_binary_crossentropy: 0.0437 - val_binary_accuracy: 0.9880
+22/22 [==============================] - 7s 307ms/step - loss: 0.1678 - binary_crossentropy: 0.1678 - binary_accuracy: 0.9699 - val_loss: 0.1379 - val_binary_crossentropy: 0.1379 - val_binary_accuracy: 0.9702
 Epoch 3/25
-140/140 [==============================] - 4s 28ms/step - loss: 0.0407 - binary_crossentropy: 0.0407 - binary_accuracy: 0.9907 - val_loss: 0.0355 - val_binary_crossentropy: 0.0355 - val_binary_accuracy: 0.9892
+22/22 [==============================] - 7s 310ms/step - loss: 0.0992 - binary_crossentropy: 0.0992 - binary_accuracy: 0.9787 - val_loss: 0.0521 - val_binary_crossentropy: 0.0521 - val_binary_accuracy: 0.9863
 Epoch 4/25
-140/140 [==============================] - 4s 28ms/step - loss: 0.0406 - binary_crossentropy: 0.0406 - binary_accuracy: 0.9899 - val_loss: 0.0304 - val_binary_crossentropy: 0.0304 - val_binary_accuracy: 0.9913
+22/22 [==============================] - 7s 307ms/step - loss: 0.0552 - binary_crossentropy: 0.0552 - binary_accuracy: 0.9877 - val_loss: 0.0409 - val_binary_crossentropy: 0.0409 - val_binary_accuracy: 0.9887
 Epoch 5/25
-140/140 [==============================] - 4s 28ms/step - loss: 0.0334 - binary_crossentropy: 0.0334 - binary_accuracy: 0.9925 - val_loss: 0.0263 - val_binary_crossentropy: 0.0263 - val_binary_accuracy: 0.9932
+22/22 [==============================] - 7s 310ms/step - loss: 0.0453 - binary_crossentropy: 0.0453 - binary_accuracy: 0.9898 - val_loss: 0.0344 - val_binary_crossentropy: 0.0344 - val_binary_accuracy: 0.9901
 Epoch 6/25
-140/140 [==============================] - 4s 28ms/step - loss: 0.0296 - binary_crossentropy: 0.0296 - binary_accuracy: 0.9937 - val_loss: 0.0234 - val_binary_crossentropy: 0.0234 - val_binary_accuracy: 0.9945
+22/22 [==============================] - 7s 312ms/step - loss: 0.0427 - binary_crossentropy: 0.0427 - binary_accuracy: 0.9897 - val_loss: 0.0317 - val_binary_crossentropy: 0.0317 - val_binary_accuracy: 0.9913
 Epoch 7/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0272 - binary_crossentropy: 0.0272 - binary_accuracy: 0.9943 - val_loss: 0.0233 - val_binary_crossentropy: 0.0233 - val_binary_accuracy: 0.9944
+22/22 [==============================] - 7s 320ms/step - loss: 0.0330 - binary_crossentropy: 0.0330 - binary_accuracy: 0.9922 - val_loss: 0.0303 - val_binary_crossentropy: 0.0303 - val_binary_accuracy: 0.9918
 Epoch 8/25
-140/140 [==============================] - 4s 28ms/step - loss: 0.0257 - binary_crossentropy: 0.0257 - binary_accuracy: 0.9946 - val_loss: 0.0217 - val_binary_crossentropy: 0.0217 - val_binary_accuracy: 0.9948
+22/22 [==============================] - 7s 300ms/step - loss: 0.0280 - binary_crossentropy: 0.0280 - binary_accuracy: 0.9930 - val_loss: 0.0287 - val_binary_crossentropy: 0.0287 - val_binary_accuracy: 0.9922
 Epoch 9/25
-140/140 [==============================] - 4s 28ms/step - loss: 0.0241 - binary_crossentropy: 0.0241 - binary_accuracy: 0.9950 - val_loss: 0.0220 - val_binary_crossentropy: 0.0220 - val_binary_accuracy: 0.9950
+22/22 [==============================] - 7s 314ms/step - loss: 0.0366 - binary_crossentropy: 0.0366 - binary_accuracy: 0.9912 - val_loss: 0.0276 - val_binary_crossentropy: 0.0276 - val_binary_accuracy: 0.9929
 Epoch 10/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0233 - binary_crossentropy: 0.0233 - binary_accuracy: 0.9952 - val_loss: 0.0214 - val_binary_crossentropy: 0.0214 - val_binary_accuracy: 0.9955
+22/22 [==============================] - 7s 314ms/step - loss: 0.0248 - binary_crossentropy: 0.0248 - binary_accuracy: 0.9939 - val_loss: 0.0267 - val_binary_crossentropy: 0.0267 - val_binary_accuracy: 0.9924
 Epoch 11/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0225 - binary_crossentropy: 0.0225 - binary_accuracy: 0.9954 - val_loss: 0.0201 - val_binary_crossentropy: 0.0201 - val_binary_accuracy: 0.9959
+22/22 [==============================] - 7s 315ms/step - loss: 0.0266 - binary_crossentropy: 0.0266 - binary_accuracy: 0.9938 - val_loss: 0.0271 - val_binary_crossentropy: 0.0271 - val_binary_accuracy: 0.9926
 Epoch 12/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0211 - binary_crossentropy: 0.0211 - binary_accuracy: 0.9956 - val_loss: 0.0178 - val_binary_crossentropy: 0.0178 - val_binary_accuracy: 0.9962
+22/22 [==============================] - 7s 312ms/step - loss: 0.0246 - binary_crossentropy: 0.0246 - binary_accuracy: 0.9942 - val_loss: 0.0275 - val_binary_crossentropy: 0.0275 - val_binary_accuracy: 0.9923
 Epoch 13/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0210 - binary_crossentropy: 0.0210 - binary_accuracy: 0.9957 - val_loss: 0.0193 - val_binary_crossentropy: 0.0193 - val_binary_accuracy: 0.9958
+22/22 [==============================] - 7s 318ms/step - loss: 0.0229 - binary_crossentropy: 0.0229 - binary_accuracy: 0.9944 - val_loss: 0.0263 - val_binary_crossentropy: 0.0263 - val_binary_accuracy: 0.9925
 Epoch 14/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0206 - binary_crossentropy: 0.0206 - binary_accuracy: 0.9957 - val_loss: 0.0180 - val_binary_crossentropy: 0.0180 - val_binary_accuracy: 0.9960
+22/22 [==============================] - 7s 319ms/step - loss: 0.0222 - binary_crossentropy: 0.0222 - binary_accuracy: 0.9947 - val_loss: 0.0188 - val_binary_crossentropy: 0.0188 - val_binary_accuracy: 0.9956
 Epoch 15/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0199 - binary_crossentropy: 0.0199 - binary_accuracy: 0.9959 - val_loss: 0.0191 - val_binary_crossentropy: 0.0191 - val_binary_accuracy: 0.9961
+22/22 [==============================] - 7s 317ms/step - loss: 0.0338 - binary_crossentropy: 0.0338 - binary_accuracy: 0.9903 - val_loss: 0.0226 - val_binary_crossentropy: 0.0226 - val_binary_accuracy: 0.9945
 Epoch 16/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0199 - binary_crossentropy: 0.0199 - binary_accuracy: 0.9959 - val_loss: 0.0197 - val_binary_crossentropy: 0.0197 - val_binary_accuracy: 0.9961
+22/22 [==============================] - 7s 317ms/step - loss: 0.0201 - binary_crossentropy: 0.0201 - binary_accuracy: 0.9951 - val_loss: 0.0206 - val_binary_crossentropy: 0.0206 - val_binary_accuracy: 0.9943
 Epoch 17/25
-140/140 [==============================] - 4s 30ms/step - loss: 0.0199 - binary_crossentropy: 0.0199 - binary_accuracy: 0.9957 - val_loss: 0.0187 - val_binary_crossentropy: 0.0187 - val_binary_accuracy: 0.9961
+22/22 [==============================] - 7s 315ms/step - loss: 0.0212 - binary_crossentropy: 0.0212 - binary_accuracy: 0.9951 - val_loss: 0.0214 - val_binary_crossentropy: 0.0214 - val_binary_accuracy: 0.9940
 Epoch 18/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0191 - binary_crossentropy: 0.0191 - binary_accuracy: 0.9961 - val_loss: 0.0187 - val_binary_crossentropy: 0.0187 - val_binary_accuracy: 0.9961
+22/22 [==============================] - 6s 279ms/step - loss: 0.0209 - binary_crossentropy: 0.0209 - binary_accuracy: 0.9950 - val_loss: 0.0210 - val_binary_crossentropy: 0.0210 - val_binary_accuracy: 0.9945
 Epoch 19/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0189 - binary_crossentropy: 0.0189 - binary_accuracy: 0.9961 - val_loss: 0.0184 - val_binary_crossentropy: 0.0184 - val_binary_accuracy: 0.9962
+22/22 [==============================] - 6s 280ms/step - loss: 0.0209 - binary_crossentropy: 0.0209 - binary_accuracy: 0.9949 - val_loss: 0.0193 - val_binary_crossentropy: 0.0193 - val_binary_accuracy: 0.9950
 Epoch 20/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0189 - binary_crossentropy: 0.0189 - binary_accuracy: 0.9961 - val_loss: 0.0187 - val_binary_crossentropy: 0.0187 - val_binary_accuracy: 0.9963
+22/22 [==============================] - 6s 291ms/step - loss: 0.0196 - binary_crossentropy: 0.0196 - binary_accuracy: 0.9953 - val_loss: 0.0199 - val_binary_crossentropy: 0.0199 - val_binary_accuracy: 0.9945
 Epoch 21/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0184 - binary_crossentropy: 0.0184 - binary_accuracy: 0.9962 - val_loss: 0.0185 - val_binary_crossentropy: 0.0185 - val_binary_accuracy: 0.9963
+22/22 [==============================] - 6s 287ms/step - loss: 0.0190 - binary_crossentropy: 0.0190 - binary_accuracy: 0.9955 - val_loss: 0.0180 - val_binary_crossentropy: 0.0180 - val_binary_accuracy: 0.9951
 Epoch 22/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0183 - binary_crossentropy: 0.0183 - binary_accuracy: 0.9963 - val_loss: 0.0184 - val_binary_crossentropy: 0.0184 - val_binary_accuracy: 0.9963
+22/22 [==============================] - 6s 280ms/step - loss: 0.0188 - binary_crossentropy: 0.0188 - binary_accuracy: 0.9955 - val_loss: 0.0185 - val_binary_crossentropy: 0.0185 - val_binary_accuracy: 0.9949
 Epoch 23/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0181 - binary_crossentropy: 0.0181 - binary_accuracy: 0.9963 - val_loss: 0.0182 - val_binary_crossentropy: 0.0182 - val_binary_accuracy: 0.9963
+22/22 [==============================] - 6s 282ms/step - loss: 0.0196 - binary_crossentropy: 0.0196 - binary_accuracy: 0.9953 - val_loss: 0.0171 - val_binary_crossentropy: 0.0171 - val_binary_accuracy: 0.9960
 Epoch 24/25
-140/140 [==============================] - 4s 30ms/step - loss: 0.0177 - binary_crossentropy: 0.0177 - binary_accuracy: 0.9963 - val_loss: 0.0181 - val_binary_crossentropy: 0.0181 - val_binary_accuracy: 0.9963
+22/22 [==============================] - 6s 288ms/step - loss: 0.0174 - binary_crossentropy: 0.0174 - binary_accuracy: 0.9958 - val_loss: 0.0170 - val_binary_crossentropy: 0.0170 - val_binary_accuracy: 0.9955
 Epoch 25/25
-140/140 [==============================] - 4s 29ms/step - loss: 0.0179 - binary_crossentropy: 0.0179 - binary_accuracy: 0.9963 - val_loss: 0.0179 - val_binary_crossentropy: 0.0179 - val_binary_accuracy: 0.9963
+22/22 [==============================] - 6s 277ms/step - loss: 0.0196 - binary_crossentropy: 0.0196 - binary_accuracy: 0.9952 - val_loss: 0.0163 - val_binary_crossentropy: 0.0163 - val_binary_accuracy: 0.9962
 </pre></div>
 </div>
 </div>
