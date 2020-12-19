@@ -38,7 +38,7 @@ import tensorflow_datasets as tfds
 
 tfds.disable_progress_bar()
 
-IMAGE_SIZE = (128, 128)
+IMAGE_SIZE = (256, 256)  # (128, 128)
 CHANNELS = 3
 CLASSES = 3
 
@@ -64,7 +64,7 @@ def _load_image(data, training=True):
 
 
 def load_data(
-    buffer_size: int = 1000) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
+        buffer_size: int = 1000) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
     ds, ds_info = tfds.load('oxford_iiit_pet', with_info=True)
     train_ds = ds['train'].map(_load_image, num_parallel_calls=AUTOTUNE)
     test_ds = ds['test'].map(functools.partial(_load_image, training=False))
