@@ -21,6 +21,7 @@ class UNet:
         drop_rate: drop rate after each convolution operation.
         padding: padding scheme for convolution, 'same' or 'valid'.
         activation: activation function to call for convolution.
+        norm_type: normalization layer.
         pool_size: kernal size for MaxPooling2D and Conv2DTranspose.
         num_classes: number of possible classes for each pixel.
         net: model holder.
@@ -35,6 +36,7 @@ class UNet:
                  drop_rate: float = 0.,
                  padding: str = "same",
                  activation: Optional[Union[str, Callable]] = LeakyReLU(0.2),
+                 norm_type: Optional[Union[str, Callable]] = 'instancenorm',
                  pool_size: int = 2,
                  num_classes: int = 2) -> None:
 
@@ -49,6 +51,7 @@ class UNet:
         self.drop_rate = drop_rate
         self.padding = padding
         self.activation = activation
+        self.norm_type = norm_type
         self.pool_size = pool_size
         self.num_classes = num_classes
 
@@ -69,10 +72,11 @@ class UNet:
                 "padding": self.padding,
                 "activation": self.activation,
                 "drop_rate": self.drop_rate,
+                "norm_type": self.norm_type,
             }
 
             if idepth == 0:
-                conv_params['input_shape'] = self.ishape
+                conv_params['norm_type'] = None
 
             x = layers.SequentialConv2DLayer(**conv_params)(x)
             downstream_layers[idepth] = x
@@ -89,7 +93,9 @@ class UNet:
                 kernel_shape=(self.pool_size, self.pool_size, curr_feature),
                 padding=self.padding,
                 strides=self.pool_size,
-                activation=self.activation)(x)
+                activation=self.activation,
+                drop_rate=self.drop_rate,
+                norm_type=self.norm_type)(x)
 
             x = layers.CropConcatLayer()(downstream_layers[idepth], x)
 
@@ -98,13 +104,18 @@ class UNet:
                 nlayer=self.nlayer,
                 padding=self.padding,
                 activation=self.activation,
-                drop_rate=self.drop_rate)(x)
+                drop_rate=self.drop_rate,
+                norm_type=self.norm_type)(x)
 
-        x = tf.keras.layers.Conv2D(filters=self.num_classes,
-                                   kernel_size=(1, 1),
-                                   padding=self.padding,
-                                   activation=self.activation)(x)
+        x = tf.keras.layers.Conv2D(
+            filters=self.num_classes,
+            kernel_size=(1, 1),
+            strides=1,
+            kernel_initializer=layers.get_kernel_initializer(
+                self.root_feature, self.kshape),
+            padding=self.padding)(x)
 
+        x = tf.keras.layers.Activation(self.activation)(x)
         outputs = tf.keras.layers.Activation("softmax", name="outputs")(x)
 
         self.net = tf.keras.Model(inputs, outputs, name="UNet")
@@ -153,10 +164,11 @@ class UNet:
                     nlayer = 2 * self.depth - nSeqConv
 
                 desc = [f'> layer {j} shape: {c.output_shape}'
-                        for j, c in enumerate(x.layers_conv2d)]
+                        for j, c in enumerate(x.layers)
+                        if isinstance(c, tf.keras.layers.Conv2D)]
                 desc.append(f'{name} {nlayer} shape: {x.output_shape}')
 
-                for l in desc:
-                    print(' ' * 4 * nlayer + l)
+                for line in desc:
+                    print(' ' * 4 * nlayer + line)
             if i == N - 1:
                 print(f'-------- output shape: {x.output_shape}')

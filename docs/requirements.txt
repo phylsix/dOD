@@ -1,4 +1,3 @@
+-r ../requirements.txt
 sphinx
 sphinx-rtd-theme
-tensorflow>=2.2.0
-numpy>=1.18.1
