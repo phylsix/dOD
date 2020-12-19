@@ -33,10 +33,10 @@ class UNet:
                  root_feature: int = 64,
                  nlayer: int = 2,
                  depth: int = 3,
-                 drop_rate: float = 0.5,
+                 drop_rate: float = 0.,
                  padding: str = "same",
                  activation: Optional[Union[str, Callable]] = LeakyReLU(0.2),
-                 norm_type: Optional[Union[str, Callable]] = 'batchnorm',
+                 norm_type: Optional[Union[str, Callable]] = 'instancenorm',
                  pool_size: int = 2,
                  num_classes: int = 2) -> None:
 

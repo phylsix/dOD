@@ -72,8 +72,8 @@ class SequentialConv2DLayer(Layer):
                  padding: str = 'same',
                  strides: int = 1,
                  activation: Optional[Union[str, Callable]] = 'relu',
-                 drop_rate: float = 0.5,
-                 norm_type: Optional[Union[str, Callable]] = 'batchnorm',
+                 drop_rate: float = 0.,
+                 norm_type: Optional[Union[str, Callable]] = 'instancenorm',
                  **kwargs) -> None:
         super(SequentialConv2DLayer, self).__init__(**kwargs)
 
@@ -166,8 +166,8 @@ class Conv2DTransposeLayer(Layer):
                  padding: str = 'valid',
                  strides: int = 2,
                  activation: Optional[Union[str, Callable]] = 'relu',
-                 drop_rate: float = 0.5,
-                 norm_type: Optional[Union[str, Callable]] = 'batchnorm',
+                 drop_rate: float = 0.,
+                 norm_type: Optional[Union[str, Callable]] = 'instancenorm',
                  **kwargs) -> None:
         super(Conv2DTransposeLayer, self).__init__(**kwargs)
 
